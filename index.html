@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Deshan Idamegedara | Full-Stack Software Engineer">
+    <meta property="og:description" content="Portfolio of Deshan Idamegedara - Featuring projects like REDA Payroll System, Darki Posters, and Enterprise Java Solutions.">
+    <meta property="og:image" content="https://deshanmahesh-lab.github.io/my-portfolio/IMG_0608-removebg-preview.png">
+    <meta property="og:url" content="https://deshanmahesh-lab.github.io/my-portfolio/">
+    
     <title>Deshan Idamegedara - Full-Stack Developer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -274,28 +279,38 @@
                 <h2 class="text-4xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400">Contact Me</h2>
                 <p class="text-center text-slate-400 mb-12 max-w-2xl mx-auto">Have a question or want to work together? Feel free to reach out.</p>
                 <div class="max-w-xl mx-auto glass-effect rounded-lg p-8">
-                    <form id="contact-form">
-                        <div class="mb-6">
+                    <form action="https://api.web3forms.com/submit" method="POST" class="space-y-6">
+                        <input type="hidden" name="access_key" value="9bc28906-ad06-4a10-8674-a3c0790b9369">
+                        
+                        <input type="hidden" name="subject" value="New Portfolio Contact Message">
+                        <input type="hidden" name="from_name" value="Portfolio Contact Form">
+                    
+                        <div>
                             <label for="name" class="block mb-2 text-sm font-medium text-slate-300">Your Name</label>
-                            <input type="text" id="name" name="name" class="form-input w-full p-3 rounded-md focus:ring-2 focus:ring-sky-500" placeholder="John Doe" required>
+                            <input type="text" id="name" name="name" class="form-input w-full p-3 rounded-md focus:ring-2 focus:ring-sky-500 bg-slate-800/50 border-slate-700 text-white" placeholder="John Doe" required>
                         </div>
-                        <div class="mb-6">
+                        
+                        <div>
                             <label for="email" class="block mb-2 text-sm font-medium text-slate-300">Your Email</label>
-                            <input type="email" id="email" name="email" class="form-input w-full p-3 rounded-md focus:ring-2 focus:ring-sky-500" placeholder="john.doe@example.com" required>
+                            <input type="email" id="email" name="email" class="form-input w-full p-3 rounded-md focus:ring-2 focus:ring-sky-500 bg-slate-800/50 border-slate-700 text-white" placeholder="john.doe@example.com" required>
                         </div>
-                        <div class="mb-6">
+                        
+                        <div>
                             <label for="message" class="block mb-2 text-sm font-medium text-slate-300">Message</label>
-                            <textarea id="message" name="message" rows="5" class="form-input w-full p-3 rounded-md focus:ring-2 focus:ring-sky-500" placeholder="Your message here..." required></textarea>
+                            <textarea id="message" name="message" rows="5" class="form-input w-full p-3 rounded-md focus:ring-2 focus:ring-sky-500 bg-slate-800/50 border-slate-700 text-white" placeholder="Your message here..." required></textarea>
                         </div>
+                    
+                        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+                    
                         <div class="text-center">
-                             <button type="submit" class="bg-sky-500 text-white font-bold text-lg py-3 px-8 rounded-full hover:bg-sky-600 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-sky-500/20 w-full">
+                             <button type="submit" class="bg-sky-500 text-white font-bold text-lg py-3 px-8 rounded-full hover:bg-sky-600 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-sky-500/20 w-full flex justify-center items-center gap-2">
                                 Send Message
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                                </svg>
                             </button>
                         </div>
                     </form>
-                    <p class="text-xs text-slate-500 text-center mt-4">
-                        Note: This will open your default email application to send the message.
-                    </p>
                 </div>
             </section>
 
@@ -618,19 +633,7 @@
                 });
             });
 
-            // Contact Form Handler
-            const contactForm = document.getElementById('contact-form');
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const name = document.getElementById('name').value;
-                const email = document.getElementById('email').value;
-                const message = document.getElementById('message').value;
-
-                const subject = `Portfolio Contact from ${name}`;
-                const body = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
-
-                window.location.href = `mailto:deshanmahesh1@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            });
+            // Contact Form Script Removed (Handled by Web3Forms directly in HTML)
 
         });
     </script>
