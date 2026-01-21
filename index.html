@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deshan Idamegedara - Full-Stack Developer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --glow-color-1: #0ea5e9; /* sky-500 */
+            --glow-color-2: #6366f1; /* indigo-500 */
+            --glow-color-3: #a855f7; /* purple-500 */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #020617; /* slate-950 */
+            color: #d1d5db; /* gray-300 */
+        }
+
+        .aurora-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .aurora-background::before, .aurora-background::after {
+            content: '';
+            position: absolute;
+            filter: blur(100px);
+            opacity: 0.15;
+        }
+
+        .aurora-background::before {
+            background: radial-gradient(circle, var(--glow-color-1), transparent 60%);
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            top: -10%;
+            left: -10%;
+            animation: move-aurora-1 25s infinite alternate ease-in-out;
+        }
+
+        .aurora-background::after {
+            background: radial-gradient(circle, var(--glow-color-3), transparent 60%);
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            bottom: -15%;
+            right: -15%;
+            animation: move-aurora-2 30s infinite alternate ease-in-out;
+        }
+        
+        @keyframes move-aurora-1 {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(80vw, 90vh) scale(1.5); }
+        }
+
+        @keyframes move-aurora-2 {
+            0% { transform: translate(0, 0) scale(1.2); }
+            100% { transform: translate(-90vw, -70vh) scale(0.8); }
+        }
+        
+        .font-mono {
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .glass-effect {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 450px;
+            }
+        }
+        
+        .modal-overlay { transition: opacity 0.3s ease; }
+        .modal-content { transition: transform 0.3s ease; }
+        
+        .nav-link.active {
+            color: #38bdf8;
+            font-weight: 600;
+        }
+        
+        .project-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.2);
+        }
+        
+        .filter-btn {
+            background-color: rgba(30, 41, 59, 0.5);
+            border: 1px solid #334155;
+            color: #94a3b8;
+        }
+        .filter-btn:hover {
+            background-color: #334155;
+            color: #e2e8f0;
+        }
+        .filter-btn.active {
+            background-color: #0ea5e9;
+            color: #FFFFFF;
+            border-color: #0ea5e9;
+        }
+
+        .form-input {
+            background-color: rgba(30, 41, 59, 0.5);
+            border: 1px solid #334155;
+            color: #e2e8f0;
+        }
+        .form-input:focus {
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.5);
+            outline: none;
+        }
+    </style>
+</head>
+<body class="flex flex-col">
+    <div class="aurora-background"></div>
+
+    <header class="fixed top-0 left-0 right-0 z-50 glass-effect">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#home" class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400">Deshan Idamegedara</a>
+            <nav class="hidden lg:flex items-center space-x-8 text-slate-300">
+                <a href="#home" class="nav-link hover:text-sky-400 transition duration-200">Home</a>
+                <a href="#skills" class="nav-link hover:text-sky-400 transition duration-200">Skills</a>
+                <a href="#projects" class="nav-link hover:text-sky-400 transition duration-200">Projects</a>
+                <a href="#education" class="nav-link hover:text-sky-400 transition duration-200">Education</a>
+                <a href="#contact" class="nav-link hover:text-sky-400 transition duration-200">Contact</a>
+                <a href="Deshan_Idamegedara_CV.pdf" download="Deshan_Idamegedara_CV.pdf" class="ml-4 inline-block bg-sky-500 text-white font-semibold text-sm py-2 px-4 rounded-full hover:bg-sky-600 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-sky-500/20">
+                    Download CV
+                </a>
+            </nav>
+            <button id="mobile-menu-button" class="lg:hidden text-white p-2">
+                <svg id="menu-open-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+                <svg id="menu-close-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    </header>
+    
+    <div id="mobile-menu" class="hidden lg:hidden fixed top-0 left-0 w-full h-full bg-slate-950/95 backdrop-blur-md z-40 pt-20">
+        <nav class="flex flex-col items-center justify-center h-full space-y-8 text-2xl text-slate-200">
+            <a href="#home" class="nav-link hover:text-sky-400 transition duration-200">Home</a>
+            <a href="#skills" class="nav-link hover:text-sky-400 transition duration-200">Skills</a>
+            <a href="#projects" class="nav-link hover:text-sky-400 transition duration-200">Projects</a>
+            <a href="#education" class="nav-link hover:text-sky-400 transition duration-200">Education</a>
+            <a href="#contact" class="nav-link hover:text-sky-400 transition duration-200">Contact</a>
+            <a href="Deshan_Idamegedara_CV.pdf" download="Deshan_Idamegedara_CV.pdf" class="mt-4 inline-block bg-sky-500 text-white font-semibold text-lg py-3 px-8 rounded-full hover:bg-sky-600 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-sky-500/20">
+                Download CV
+            </a>
+        </nav>
+    </div>
+
+
+    <main class="w-full pt-16">
+        <div class="container mx-auto px-6 md:px-12">
+            
+            <section id="home" class="min-h-screen flex flex-col justify-center">
+                <div class="max-w-4xl mx-auto text-center">
+                    <img src="IMG_0608-removebg-preview.png" alt="Deshan Idamegedara - Profile Picture" class="w-48 h-48 rounded-full mx-auto mb-8 border-4 border-slate-700 shadow-lg">
+                    <h1 class="text-5xl md:text-7xl font-bold tracking-tight text-white mb-4">Deshan Idamegedara</h1>
+                    <h2 class="text-2xl md:text-3xl font-medium bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400 mb-8">Full-Stack Software Engineer</h2>
+                    <p class="text-lg text-slate-400 max-w-3xl mx-auto leading-relaxed mb-8">
+                        BEng (Hons) Software Engineering graduate with comprehensive expertise in full-stack development, ranging from modern web frameworks like Next.js to enterprise Java systems. Proven ability to architect scalable solutions, including desktop applications with Electron.js and robust cloud-ready web platforms.
+                    </p>
+                    <div class="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-slate-400 font-mono">
+                        <a href="mailto:deshanmahesh1@gmail.com" class="hover:text-sky-400 transition-colors">deshanmahesh1@gmail.com</a>
+                        <span class="hidden md:inline">&bull;</span>
+                        <a href="tel:+94777560855" class="hover:text-sky-400 transition-colors">+94777560855</a>
+                        <span class="hidden md:inline">&bull;</span>
+                        <a href="https://linkedin.com/in/deshan-idamegedara-2b6022259" target="_blank" class="hover:text-sky-400 transition-colors">LinkedIn</a>
+                        <span class="hidden md:inline">&bull;</span>
+                        <a href="https://github.com/deshanmahesh-lab" target="_blank" class="hover:text-sky-400 transition-colors">GitHub</a>
+                    </div>
+                </div>
+            </section>
+
+            <section id="skills" class="py-20">
+                <h2 class="text-4xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400">Technical Skills</h2>
+                <p class="text-center text-slate-400 mb-12 max-w-2xl mx-auto">A visual representation of my core competencies, highlighting my strengths in modern full-stack architecture, enterprise systems, and cross-platform development.</p>
+                <div class="chart-container">
+                    <canvas id="skillsChart"></canvas>
+                </div>
+                <div class="max-w-5xl mx-auto mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="glass-effect p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold mb-3 text-white">Languages</h3>
+                        <ul class="space-y-2 text-slate-300">
+                            <li>Java & Jakarta EE</li>
+                            <li>TypeScript & JavaScript (ES6+)</li>
+                            <li>PHP</li>
+                            <li>HTML5 & CSS3</li>
+                        </ul>
+                    </div>
+                    <div class="glass-effect p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold mb-3 text-white">Frameworks & Libraries</h3>
+                        <ul class="space-y-2 text-slate-300">
+                            <li>Next.js & React</li>
+                            <li>Electron.js</li>
+                            <li>Tailwind CSS</li>
+                            <li>Hibernate & Servlets</li>
+                        </ul>
+                    </div>
+                    <div class="glass-effect p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold mb-3 text-white">Tools & Databases</h3>
+                        <ul class="space-y-2 text-slate-300">
+                            <li>MySQL, MongoDB, Firebase</li>
+                            <li>Git & GitHub</li>
+                            <li>Vite & Node.js</li>
+                            <li>JMeter & Payara Server</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="projects" class="py-20">
+                <h2 class="text-4xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400">Projects Portfolio</h2>
+                <p class="text-center text-slate-400 mb-8 max-w-2xl mx-auto">An interactive showcase of my key projects. Use the filters to explore different technologies and click on any project card to see more details about its architecture and implementation.</p>
+                <div id="project-filters" class="flex flex-wrap justify-center gap-2 mb-12">
+                </div>
+                <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                </div>
+            </section>
+
+            <section id="education" class="py-20">
+                <h2 class="text-4xl font-bold text-center mb-12 bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400">Education</h2>
+                <div class="max-w-3xl mx-auto">
+                    <div class="relative border-l-2 border-slate-700 pl-10">
+                        <div class="absolute -left-3 top-2 w-5 h-5 bg-sky-500 rounded-full border-4 border-slate-800"></div>
+                        <div class="mb-12">
+                            <p class="text-sm text-sky-400 font-mono">2022 – 2026</p>
+                            <h3 class="text-2xl font-semibold mt-1 text-white">BEng (Hons) in Software Engineering</h3>
+                            <p class="text-lg text-slate-300">IIC University of Technology, Cambodia</p>
+                        </div>
+                        <div class="absolute -left-3 top-36 w-5 h-5 bg-sky-500 rounded-full border-4 border-slate-800"></div>
+                        <div>
+                            <p class="text-sm text-sky-400 font-mono">2022 – 2025</p>
+                            <h3 class="text-2xl font-semibold mt-1 text-white">Professional Graduate Diploma in Software Engineering</h3>
+                            <p class="text-lg text-slate-300">Java Institute for Advanced Technology, Sri Lanka</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+             <section id="contact" class="py-20">
+                <h2 class="text-4xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400">Contact Me</h2>
+                <p class="text-center text-slate-400 mb-12 max-w-2xl mx-auto">Have a question or want to work together? Feel free to reach out.</p>
+                <div class="max-w-xl mx-auto glass-effect rounded-lg p-8">
+                    <form id="contact-form">
+                        <div class="mb-6">
+                            <label for="name" class="block mb-2 text-sm font-medium text-slate-300">Your Name</label>
+                            <input type="text" id="name" name="name" class="form-input w-full p-3 rounded-md focus:ring-2 focus:ring-sky-500" placeholder="John Doe" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="email" class="block mb-2 text-sm font-medium text-slate-300">Your Email</label>
+                            <input type="email" id="email" name="email" class="form-input w-full p-3 rounded-md focus:ring-2 focus:ring-sky-500" placeholder="john.doe@example.com" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="message" class="block mb-2 text-sm font-medium text-slate-300">Message</label>
+                            <textarea id="message" name="message" rows="5" class="form-input w-full p-3 rounded-md focus:ring-2 focus:ring-sky-500" placeholder="Your message here..." required></textarea>
+                        </div>
+                        <div class="text-center">
+                             <button type="submit" class="bg-sky-500 text-white font-bold text-lg py-3 px-8 rounded-full hover:bg-sky-600 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-sky-500/20 w-full">
+                                Send Message
+                            </button>
+                        </div>
+                    </form>
+                    <p class="text-xs text-slate-500 text-center mt-4">
+                        Note: This will open your default email application to send the message.
+                    </p>
+                </div>
+            </section>
+
+             <footer class="text-center py-6 border-t border-slate-800 mt-12">
+                <p class="text-slate-500">&copy; 2026 Deshan Idamegedara. Designed & Built with passion.</p>
+            </footer>
+
+        </div>
+    </main>
+
+    <div id="project-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden opacity-0">
+        <div class="modal-content glass-effect rounded-lg shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto transform scale-95">
+            <div class="sticky top-0 glass-effect p-6 border-b border-slate-800 flex justify-between items-center z-10">
+                <h3 id="modal-title" class="text-2xl font-bold text-white"></h3>
+                <button id="modal-close" class="text-gray-400 hover:text-white text-3xl">&times;</button>
+            </div>
+            <div class="p-8">
+                <div id="modal-description" class="prose prose-invert max-w-none text-slate-300"></div>
+                <h4 class="text-lg font-semibold mt-6 mb-2 text-white">Technologies Used:</h4>
+                <p id="modal-tech" class="text-sky-400 font-mono"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuOpenIcon = document.getElementById('menu-open-icon');
+            const menuCloseIcon = document.getElementById('menu-close-icon');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                menuOpenIcon.classList.toggle('hidden');
+                menuCloseIcon.classList.toggle('hidden');
+                document.body.classList.toggle('overflow-hidden');
+            });
+            
+            // Close mobile menu when a link is clicked
+            const mobileNavLinks = mobileMenu.querySelectorAll('a');
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    menuOpenIcon.classList.remove('hidden');
+                    menuCloseIcon.classList.add('hidden');
+                    document.body.classList.remove('overflow-hidden');
+                });
+            });
+
+
+            const projects = [
+                 {
+                    title: "REDA Payroll Management System",
+                    tags: ["Desktop", "Full-Stack", "Electron.js", "FinTech"],
+                    shortDesc: "A robust, offline-first desktop application for automating complex salary calculations and payroll.",
+                    details: `
+                        <ul>
+                            <li><strong>Architected a Scalable Desktop Solution:</strong> Developed a cross-platform desktop application using <strong>Electron.js</strong> and <strong>React (Vite)</strong>, optimized for performance and offline capabilities.</li>
+                            <li><strong>Engineered Complex Financial Algorithms:</strong> Designed dynamic salary calculation logic to handle variable daily rates, overtime computations, and statutory deductions (EPF/ETF).</li>
+                            <li><strong>Resilient Database Layer:</strong> Built a fault-tolerant <strong>MySQL</strong> connection handler with an automated 'smart-connect' algorithm for zero-configuration setup.</li>
+                            <li><strong>Optimized Deployment Pipeline:</strong> Configured electron-builder to generate production-ready Windows installers (.exe) with automated environment setup.</li>
+                        </ul>
+                    `,
+                    tech: "JavaScript (ES6+), React.js, Electron, Node.js, Vite, MySQL, Tailwind CSS."
+                },
+                {
+                    title: "Darki Posters | Premium Anime E-commerce",
+                    tags: ["Web", "Full-Stack", "Next.js", "TypeScript"],
+                    shortDesc: "A premium e-commerce platform for anime posters featuring dynamic filtering and shipping logic.",
+                    details: `
+                        <ul>
+                            <li>Developed a high-performance e-commerce platform using <strong>Next.js 14+ (App Router)</strong> and <strong>TypeScript</strong> for type-safe code.</li>
+                            <li>Implemented a responsive and aesthetic UI using <strong>Tailwind CSS</strong>, optimized for showcasing visual art products.</li>
+                            <li>Engineered custom shipping logic based on location (Haragama, Kandy base) and integrated dynamic product filtering.</li>
+                            <li>Structured the project with a strict focus on scalability and modern web standards.</li>
+                        </ul>
+                    `,
+                    tech: "Next.js 14, TypeScript, Tailwind CSS, React."
+                },
+                {
+                    title: "National Bank | Enterprise Banking System",
+                    tags: ["Enterprise", "Java EE", "Backend"],
+                    shortDesc: "A secure, multi-tier enterprise application for time-sensitive financial transactions and role-based access.",
+                    details: `
+                        <ul>
+                            <li>Architected a secure, multi-tier enterprise application using Jakarta EE to handle time-sensitive financial transactions and role-based access control (USER and ADMIN roles).</li>
+                            <li>Implemented a persistent EJB timer for automating scheduled fund transfers, ensuring reliability even after server restarts.</li>
+                            <li>Engineered a robust security model using the Jakarta Security API to protect sensitive financial data and restrict access based on user roles.</li>
+                            <li>Successfully load-tested the system to handle 150 concurrent users logging in simultaneously without crashes or timeouts.</li>
+                        </ul>
+                    `,
+                    tech: "Jakarta EE, Enterprise JavaBeans (EJB), Jakarta Security, JPA, Servlets, Payara Server, JMeter."
+                },
+                {
+                    title: "Distributed Online Auction System",
+                    tags: ["Enterprise", "Java EE", "Backend", "Real-Time"],
+                    shortDesc: "A real-time, scalable auction platform using a layered architecture with JMS and WebSockets.",
+                    details: `
+                        <ul>
+                            <li>Engineered a robust, layered architecture for a real-time auction platform, separating the web, business logic, and messaging tiers to ensure scalability.</li>
+                            <li>Implemented a real-time bidding system using Java Message Service (JMS) and WebSockets to broadcast instant updates to all connected clients.</li>
+                            <li>Validated system performance under load, successfully handling concurrent bids from 10 users simultaneously without data conflicts.</li>
+                        </ul>
+                    `,
+                    tech: "Java EE, EJB, JMS, ActiveMQ, WebSocket, Servlets, JSP, Payara Server."
+                },
+                {
+                    title: "CAM MART | Full-Stack E-commerce Platform",
+                    tags: ["Web", "Full-Stack", "Java", "E-commerce"],
+                    shortDesc: "A complete e-commerce solution using Hibernate, with robust user authentication and order processing.",
+                    details: `
+                        <ul>
+                            <li>Architected a complete e-commerce solution with a Java Servlet and Hibernate backend, featuring secure user authentication with email verification, and comprehensive inventory management.</li>
+                            <li>Engineered a sophisticated shopping cart system that manages items in the user's session and seamlessly transfers them to a persistent, database-backed cart upon login.</li>
+                            <li>Utilized the Hibernate framework for Object-Relational Mapping (ORM), simplifying database interactions and ensuring data integrity.</li>
+                            <li>Successfully integrated the PayHere third-party payment gateway to process secure, real-time financial transactions.</li>
+                        </ul>
+                    `,
+                    tech: "Java Servlets, Hibernate, MySQL, PayHere Payment Gateway, Gson, JSP."
+                },
+                {
+                    title: "Garadise | Android M-Commerce Platform",
+                    tags: ["Mobile", "Android", "Firebase"],
+                    shortDesc: "A global M-Commerce Android app for purchasing console games, built to handle high concurrency.",
+                    details: `
+                        <ul>
+                            <li>Developed a global M-Commerce Android application for purchasing console games, engineered to handle up to 10,000 concurrent users.</li>
+                            <li>Integrated Firebase for backend services, including authentication, database management, and push notifications for real-time order updates.</li>
+                            <li>Achieved a 90% user satisfaction rate during usability testing and optimized the app for a 2.5-second average launch time.</li>
+                        </ul>
+                    `,
+                    tech: "Android Studio, Java, Firebase, Google Maps API, PayHere Payment Gateway."
+                },
+                {
+                    title: "Select | Web Accommodation Booking Platform",
+                    tags: ["Web", "Full-Stack", "PHP"],
+                    shortDesc: "A booking platform with a complex search engine, secure admin panel, and sales dashboard.",
+                    details: `
+                        <ul>
+                            <li>Engineered a complex back-end search and filtering engine with over 10 different parameters to provide users with tailored accommodation results.</li>
+                            <li>Developed a secure admin login system featuring email-based verification codes using PHPMailer.</li>
+                            <li>Designed and built a full administrative dashboard to monitor sales metrics and manage all platform content.</li>
+                        </ul>
+                    `,
+                    tech: "PHP, HTML, CSS, JavaScript (AJAX), MySQL, Bootstrap."
+                },
+                {
+                    title: "Adyapana | Desktop Student Management System",
+                    tags: ["Desktop", "Java"],
+                    shortDesc: "A full-featured student management system with a multi-functional administrative dashboard using Java Swing.",
+                    details: `
+                        <ul>
+                            <li>Architected and implemented a full-featured student management system with a multi-functional administrative dashboard using Java Swing.</li>
+                            <li>Designed a complete relational database schema from the ground up in MySQL to ensure data integrity across all system modules.</li>
+                            <li>Developed a full suite of CRUD (Create, Read, Update, Delete) operations for managing student, teacher, and class records.</li>
+                        </ul>
+                    `,
+                    tech: "Java, Java Swing, MySQL."
+                },
+                {
+                    title: "Network Infrastructure Design",
+                    tags: ["Infrastructure", "Networking"],
+                    shortDesc: "Designed a complete LAN infrastructure for an educational facility supporting 80+ concurrent users.",
+                    details: `
+                        <ul>
+                            <li>Designed a complete Local Area Network (LAN) infrastructure for a multi-functional educational facility supporting over 40 workstations and 40 concurrent wireless users.</li>
+                            <li>Developed a detailed network requirements specification, including hardware quotations, budget estimation, and a maintenance strategy to ensure long-term reliability.</li>
+                        </ul>
+                    `,
+                    tech: "Star/Extended Star Topology, CAT6 Cabling, Network Switches, Routers & Firewalls."
+                }
+            ];
+
+            const projectGrid = document.getElementById('project-grid');
+            const filterContainer = document.getElementById('project-filters');
+            
+            const modal = document.getElementById('project-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDescription = document.getElementById('modal-description');
+            const modalTech = document.getElementById('modal-tech');
+            const modalClose = document.getElementById('modal-close');
+
+            let allTags = ['All', ...new Set(projects.flatMap(p => p.tags))];
+            let activeFilter = 'All';
+
+            function renderFilters() {
+                filterContainer.innerHTML = allTags.map(tag => `
+                    <button class="filter-btn px-4 py-2 text-sm font-medium rounded-full transition-colors ${activeFilter === tag ? 'active' : ''}" data-filter="${tag}">
+                        ${tag}
+                    </button>
+                `).join('');
+            }
+
+            function renderProjects() {
+                const filteredProjects = activeFilter === 'All' 
+                    ? projects 
+                    : projects.filter(p => p.tags.includes(activeFilter));
+
+                projectGrid.innerHTML = filteredProjects.map((project, index) => `
+                    <div class="project-card glass-effect rounded-lg overflow-hidden cursor-pointer" data-index="${projects.indexOf(project)}">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2 text-white">${project.title}</h3>
+                            <p class="text-slate-400 mb-4 text-sm">${project.shortDesc}</p>
+                            <div class="flex flex-wrap gap-2">
+                                ${project.tags.map(tag => `<span class="bg-slate-700 text-slate-300 text-xs font-semibold px-2.5 py-0.5 rounded-full">${tag}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            function openModal(project) {
+                modalTitle.textContent = project.title;
+                modalDescription.innerHTML = project.details;
+                modalTech.textContent = project.tech;
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modal.querySelector('.modal-content').classList.remove('scale-95');
+                }, 10);
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal() {
+                modal.classList.add('opacity-0');
+                modal.querySelector('.modal-content').classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }, 300);
+            }
+            
+            filterContainer.addEventListener('click', (e) => {
+                if (e.target.matches('.filter-btn')) {
+                    activeFilter = e.target.dataset.filter;
+                    renderFilters();
+                    renderProjects();
+                }
+            });
+
+            projectGrid.addEventListener('click', (e) => {
+                const card = e.target.closest('.project-card');
+                if (card) {
+                    const projectIndex = parseInt(card.dataset.index, 10);
+                    openModal(projects[projectIndex]);
+                }
+            });
+
+            modalClose.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            renderFilters();
+            renderProjects();
+
+            const ctx = document.getElementById('skillsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Enterprise Java', 'Frontend (React/Next)', 'Backend (Node/PHP)', 'Mobile/Desktop', 'Databases', 'DevOps/Tools'],
+                    datasets: [{
+                        label: 'Proficiency',
+                        data: [9, 8, 8, 9, 9, 7],
+                        backgroundColor: 'rgba(56, 189, 248, 0.2)',
+                        borderColor: 'rgb(56, 189, 248)',
+                        pointBackgroundColor: 'rgb(56, 189, 248)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(56, 189, 248)'
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            pointLabels: { 
+                                font: { size: 12, family: "'Inter', sans-serif" },
+                                color: '#cbd5e1'
+                             },
+                            suggestedMin: 0,
+                            suggestedMax: 10,
+                            ticks: {
+                                backdropColor: 'rgba(2, 6, 23, 0.5)',
+                                color: '#94a3b8',
+                                stepSize: 2
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section');
+
+            window.addEventListener('scroll', () => {
+                let current = 'home';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (window.scrollY >= sectionTop - 120) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+            // Contact Form Handler
+            const contactForm = document.getElementById('contact-form');
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const message = document.getElementById('message').value;
+
+                const subject = `Portfolio Contact from ${name}`;
+                const body = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
+
+                window.location.href = `mailto:deshanmahesh1@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            });
+
+        });
+    </script>
+</body>
+</html>
