@@ -3,691 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <meta property="og:title" content="Deshan Idamegedara | Full-Stack Software Engineer">
-    <meta property="og:description" content="Portfolio of Deshan Idamegedara - Featuring projects like REDA Payroll System, Darki Posters, and Enterprise Java Solutions.">
-    <meta property="og:image" content="https://deshanmahesh-lab.github.io/my-portfolio/IMG_0608-removebg-preview.png">
-    <meta property="og:url" content="https://deshanmahesh-lab.github.io/my-portfolio/">
-    
-    <link rel="icon" type="image/png" href="IMG_0608-removebg-preview.png">
-
-    <title>Deshan Idamegedara - Full-Stack Developer</title>
+    <title id="tab-title">Deshan Idamegedara - Full-Stack Developer</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Roboto+Mono:wght@400&display=swap');
+        
         :root {
-            --glow-color-1: #0ea5e9; /* sky-500 */
-            --glow-color-2: #6366f1; /* indigo-500 */
-            --glow-color-3: #a855f7; /* purple-500 */
+            --glow-color-1: #0ea5e9;
+            --glow-color-2: #6366f1;
+            --glow-color-3: #a855f7;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #020617; /* slate-950 */
-            color: #d1d5db; /* gray-300 */
+            background-color: #020617;
+            color: #d1d5db;
+            overflow-x: hidden;
         }
 
-        /* Aurora Background Animation */
+        /* Aurora Background - */
         .aurora-background {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; overflow: hidden;
         }
-
         .aurora-background::before, .aurora-background::after {
-            content: '';
-            position: absolute;
-            filter: blur(100px);
-            opacity: 0.15;
+            content: ''; position: absolute; filter: blur(100px); opacity: 0.15;
         }
-
         .aurora-background::before {
             background: radial-gradient(circle, var(--glow-color-1), transparent 60%);
-            width: 500px;
-            height: 500px;
-            border-radius: 50%;
-            top: -10%;
-            left: -10%;
-            animation: move-aurora-1 25s infinite alternate ease-in-out;
+            width: 500px; height: 500px; border-radius: 50%;
+            top: -10%; left: -10%; animation: move-aurora-1 25s infinite alternate ease-in-out;
         }
-
         .aurora-background::after {
             background: radial-gradient(circle, var(--glow-color-3), transparent 60%);
-            width: 600px;
-            height: 600px;
-            border-radius: 50%;
-            bottom: -15%;
-            right: -15%;
-            animation: move-aurora-2 30s infinite alternate ease-in-out;
+            width: 600px; height: 600px; border-radius: 50%;
+            bottom: -15%; right: -15%; animation: move-aurora-2 30s infinite alternate ease-in-out;
         }
-        
-        @keyframes move-aurora-1 {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(80vw, 90vh) scale(1.5); }
-        }
-
-        @keyframes move-aurora-2 {
-            0% { transform: translate(0, 0) scale(1.2); }
-            100% { transform: translate(-90vw, -70vh) scale(0.8); }
-        }
-        
-        .font-mono { font-family: 'Roboto Mono', monospace; }
+        @keyframes move-aurora-1 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(80vw, 90vh) scale(1.5); } }
+        @keyframes move-aurora-2 { 0% { transform: translate(0, 0) scale(1.2); } 100% { transform: translate(-90vw, -70vh) scale(0.8); } }
 
         .glass-effect {
             background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             -webkit-backdrop-filter: blur(12px);
         }
 
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 550px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 350px;
-            max-height: 450px;
-        }
-        @media (min-width: 768px) {
-            .chart-container { height: 450px; }
-        }
-        
-        .modal-overlay { transition: opacity 0.3s ease; }
-        .modal-content { transition: transform 0.3s ease; }
-        
-        .nav-link.active {
-            color: #38bdf8;
-            font-weight: 600;
-        }
-        
-        .project-card {
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .project-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(56, 189, 248, 0.5);
-            box-shadow: 0 0 25px rgba(56, 189, 248, 0.2);
-        }
-        
-        .filter-btn {
-            background-color: rgba(30, 41, 59, 0.5);
-            border: 1px solid #334155;
-            color: #94a3b8;
-        }
-        .filter-btn:hover {
-            background-color: #334155;
-            color: #e2e8f0;
-        }
-        .filter-btn.active {
-            background-color: #0ea5e9;
-            color: #FFFFFF;
-            border-color: #0ea5e9;
-        }
+        .github-bar-container { display: flex; height: 12px; width: 100%; border-radius: 20px; overflow: hidden; background: rgba(30, 41, 59, 0.5); margin-bottom: 24px; }
+        .github-bar-segment { height: 100%; transition: width 1s ease-in-out; }
 
-        .form-input {
-            background-color: rgba(30, 41, 59, 0.5);
-            border: 1px solid #334155;
-            color: #e2e8f0;
+        .project-card { 
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
         }
-        .form-input:focus {
-            border-color: #0ea5e9;
-            box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.5);
-            outline: none;
+        .project-card:hover { 
+            transform: translateY(-5px); 
+            border-color: rgba(56, 189, 248, 0.5); 
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.2); 
         }
+        
+        .nav-link.active { color: #38bdf8; font-weight: 600; }
     </style>
 </head>
-<body class="flex flex-col">
+<body>
     <div class="aurora-background"></div>
 
     <header class="fixed top-0 left-0 right-0 z-50 glass-effect">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#home" class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400">Deshan Idamegedara</a>
-            <nav class="hidden lg:flex items-center space-x-8 text-slate-300">
-                <a href="#home" class="nav-link hover:text-sky-400 transition duration-200">Home</a>
-                <a href="#skills" class="nav-link hover:text-sky-400 transition duration-200">Skills</a>
-                <a href="#projects" class="nav-link hover:text-sky-400 transition duration-200">Projects</a>
-                <a href="#education" class="nav-link hover:text-sky-400 transition duration-200">Education</a>
-                <a href="#contact" class="nav-link hover:text-sky-400 transition duration-200">Contact</a>
-                <a href="Deshan_Idamegedara_CV.pdf" download="Deshan_Idamegedara_CV.pdf" class="ml-4 inline-block bg-sky-500 text-white font-semibold text-sm py-2 px-4 rounded-full hover:bg-sky-600 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-sky-500/20">
-                    Download CV
-                </a>
+            <a href="#home" id="nav-logo" class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400 italic">...</a>
+            <nav class="hidden lg:flex items-center space-x-8 text-slate-300 font-medium">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#education" class="nav-link">Education</a>
+                <a href="#contact" class="nav-link">Contact</a>
+                <a href="Deshan_Mahesh_CV.pdf" download="Deshan_Mahesh_CV.pdf" class="ml-4 bg-sky-500 text-white font-black text-[10px] px-5 py-2.5 rounded-full hover:bg-sky-600 transition shadow-lg uppercase tracking-widest italic">Get Resume</a>
             </nav>
-            <button id="mobile-menu-button" class="lg:hidden text-white p-2">
-                <svg id="menu-open-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                </svg>
-                <svg id="menu-close-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
         </div>
     </header>
-    
-    <div id="mobile-menu" class="hidden lg:hidden fixed top-0 left-0 w-full h-full bg-slate-950/95 backdrop-blur-md z-40 pt-20">
-        <nav class="flex flex-col items-center justify-center h-full space-y-8 text-2xl text-slate-200">
-            <a href="#home" class="nav-link hover:text-sky-400 transition duration-200">Home</a>
-            <a href="#skills" class="nav-link hover:text-sky-400 transition duration-200">Skills</a>
-            <a href="#projects" class="nav-link hover:text-sky-400 transition duration-200">Projects</a>
-            <a href="#education" class="nav-link hover:text-sky-400 transition duration-200">Education</a>
-            <a href="#contact" class="nav-link hover:text-sky-400 transition duration-200">Contact</a>
-            <a href="Deshan_Idamegedara_CV.pdf" download="Deshan_Idamegedara_CV.pdf" class="mt-4 inline-block bg-sky-500 text-white font-semibold text-lg py-3 px-8 rounded-full hover:bg-sky-600 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-sky-500/20">
-                Download CV
-            </a>
-        </nav>
-    </div>
 
     <main class="w-full pt-16">
         <div class="container mx-auto px-6 md:px-12">
             
-            <section id="home" class="min-h-screen flex flex-col justify-center">
-                <div class="max-w-4xl mx-auto text-center">
-                    <img src="IMG_0608-removebg-preview.png" alt="Deshan Idamegedara" class="w-48 h-48 rounded-full mx-auto mb-8 border-4 border-slate-700 shadow-lg">
-                    <h1 class="text-5xl md:text-7xl font-bold tracking-tight text-white mb-4">Deshan Idamegedara</h1>
-                    <h2 class="text-2xl md:text-3xl font-medium bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400 mb-8">Full-Stack Software Engineer</h2>
-                    <p class="text-lg text-slate-400 max-w-3xl mx-auto leading-relaxed mb-8">
-                        BEng (Hons) Software Engineering graduate with comprehensive expertise in full-stack development, ranging from modern web frameworks like Next.js to enterprise Java systems. Proven ability to architect scalable solutions, including desktop applications with Electron.js and robust cloud-ready web platforms.
-                    </p>
-                    <div class="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-slate-400 font-mono">
-                        <a href="mailto:deshanmahesh1@gmail.com" class="hover:text-sky-400 transition-colors">deshanmahesh1@gmail.com</a>
-                        <span class="hidden md:inline">&bull;</span>
-                        <a href="tel:+94777560855" class="hover:text-sky-400 transition-colors">+94777560855</a>
-                        <span class="hidden md:inline">&bull;</span>
-                        <a href="https://linkedin.com/in/deshan-idamegedara-2b6022259" target="_blank" class="hover:text-sky-400 transition-colors">LinkedIn</a>
-                        <span class="hidden md:inline">&bull;</span>
-                        <a href="https://github.com/deshanmahesh-lab" target="_blank" class="hover:text-sky-400 transition-colors">GitHub</a>
-                    </div>
+            <section id="home" class="min-h-screen flex flex-col justify-center text-center">
+                <div class="max-w-4xl mx-auto">
+                    <img src="IMG_0608-removebg-preview.png" alt="Profile" class="w-48 h-48 rounded-full mx-auto mb-8 border-4 border-slate-700 shadow-lg">
+                    <h1 id="h-name" class="text-5xl md:text-7xl font-bold tracking-tight text-white mb-4">...</h1>
+                    <h2 id="h-headline" class="text-2xl md:text-3xl font-medium bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400 mb-8">...</h2>
+                    <p id="h-bio" class="text-lg text-slate-400 max-w-3xl mx-auto leading-relaxed mb-8">...</p>
+                    <div id="contact-bar" class="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-slate-400 font-mono text-sm mb-8"></div>
+                    <div id="social-bar" class="flex justify-center gap-8 text-3xl"></div>
                 </div>
             </section>
 
             <section id="skills" class="py-20">
-                <h2 class="text-4xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400">Technical Skills</h2>
-                <p class="text-center text-slate-400 mb-12 max-w-2xl mx-auto">A visual representation of my core competencies, highlighting my strengths in modern full-stack architecture, enterprise systems, and cross-platform development.</p>
-                <div class="chart-container">
-                    <canvas id="skillsChart"></canvas>
-                </div>
-                <div class="max-w-5xl mx-auto mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="glass-effect p-6 rounded-lg">
-                        <h3 class="text-xl font-semibold mb-3 text-white">Languages</h3>
-                        <ul class="space-y-2 text-slate-300">
-                            <li>Java & Jakarta EE</li>
-                            <li>TypeScript & JavaScript (ES6+)</li>
-                            <li>PHP</li>
-                            <li>HTML5 & CSS3</li>
-                        </ul>
-                    </div>
-                    <div class="glass-effect p-6 rounded-lg">
-                        <h3 class="text-xl font-semibold mb-3 text-white">Frameworks & Libraries</h3>
-                        <ul class="space-y-2 text-slate-300">
-                            <li>Next.js & React</li>
-                            <li>Electron.js</li>
-                            <li>Tailwind CSS</li>
-                            <li>Hibernate & Servlets</li>
-                        </ul>
-                    </div>
-                    <div class="glass-effect p-6 rounded-lg">
-                        <h3 class="text-xl font-semibold mb-3 text-white">Tools & Databases</h3>
-                        <ul class="space-y-2 text-slate-300">
-                            <li>MySQL, MongoDB, Firebase</li>
-                            <li>Git & GitHub</li>
-                            <li>Vite & Node.js</li>
-                            <li>JMeter & Payara Server</li>
-                        </ul>
-                    </div>
+                <h2 class="text-4xl font-bold text-center mb-12 bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400 italic">Technical Ecosystem</h2>
+                <div class="max-w-4xl mx-auto glass-effect p-8 rounded-3xl">
+                    <div id="github-stats-container" class="grid md:grid-cols-2 gap-6 mb-10"></div>
+                    <p class="text-slate-500 text-xs uppercase font-bold mb-4 tracking-widest text-center">Language Distribution Across Repositories</p>
+                    <div id="github-bar" class="github-bar-container"></div>
+                    <div id="skills-legend" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
                 </div>
             </section>
 
             <section id="projects" class="py-20">
-                <h2 class="text-4xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400">Projects Portfolio</h2>
-                <p class="text-center text-slate-400 mb-8 max-w-2xl mx-auto">An interactive showcase of my key projects. Click on any project to view technical details, code, and demos.</p>
-                <div id="project-filters" class="flex flex-wrap justify-center gap-2 mb-12">
-                </div>
-                <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                </div>
+                <h2 class="text-4xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400 italic">Featured Repositories</h2>
+                <p class="text-center text-slate-500 mb-12 italic">Fetched directly from GitHub with real-time metadata</p>
+                <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
             </section>
 
             <section id="education" class="py-20">
-                <h2 class="text-4xl font-bold text-center mb-12 bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400">Education</h2>
-                <div class="max-w-3xl mx-auto">
-                    <div class="relative border-l-2 border-slate-700 pl-10">
-                        <div class="absolute -left-3 top-2 w-5 h-5 bg-sky-500 rounded-full border-4 border-slate-800"></div>
-                        <div class="mb-12">
-                            <p class="text-sm text-sky-400 font-mono">2022 – 2026</p>
-                            <h3 class="text-2xl font-semibold mt-1 text-white">BEng (Hons) in Software Engineering</h3>
-                            <p class="text-lg text-slate-300">IIC University of Technology, Cambodia</p>
-                        </div>
-                        <div class="absolute -left-3 top-36 w-5 h-5 bg-sky-500 rounded-full border-4 border-slate-800"></div>
-                        <div>
-                            <p class="text-sm text-sky-400 font-mono">2022 – 2025</p>
-                            <h3 class="text-2xl font-semibold mt-1 text-white">Professional Graduate Diploma in Software Engineering</h3>
-                            <p class="text-lg text-slate-300">Java Institute for Advanced Technology, Sri Lanka</p>
-                        </div>
-                    </div>
-                </div>
+                <h2 class="text-4xl font-bold text-center mb-12 bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400 italic">Education</h2>
+                <div id="edu-timeline" class="max-w-3xl mx-auto space-y-12 border-l-2 border-slate-700 pl-10 relative ml-4"></div>
             </section>
 
-             <section id="contact" class="py-20">
-                <h2 class="text-4xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400">Contact Me</h2>
-                <p class="text-center text-slate-400 mb-12 max-w-2xl mx-auto">Have a question or want to work together? Feel free to reach out.</p>
+            <section id="contact" class="py-20">
+                <h2 class="text-4xl font-bold text-center mb-12 bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400 italic">Get In Touch</h2>
                 <div class="max-w-xl mx-auto glass-effect rounded-lg p-8">
                     <form action="https://api.web3forms.com/submit" method="POST" class="space-y-6">
                         <input type="hidden" name="access_key" value="9bc28906-ad06-4a10-8674-a3c0790b9369">
-                        
-                        <input type="hidden" name="subject" value="New Portfolio Contact Message">
-                        <input type="hidden" name="from_name" value="Portfolio Contact Form">
-                    
-                        <div>
-                            <label for="name" class="block mb-2 text-sm font-medium text-slate-300">Your Name</label>
-                            <input type="text" id="name" name="name" class="form-input w-full p-3 rounded-md focus:ring-2 focus:ring-sky-500 bg-slate-800/50 border-slate-700 text-white" placeholder="John Doe" required>
-                        </div>
-                        
-                        <div>
-                            <label for="email" class="block mb-2 text-sm font-medium text-slate-300">Your Email</label>
-                            <input type="email" id="email" name="email" class="form-input w-full p-3 rounded-md focus:ring-2 focus:ring-sky-500 bg-slate-800/50 border-slate-700 text-white" placeholder="john.doe@example.com" required>
-                        </div>
-                        
-                        <div>
-                            <label for="message" class="block mb-2 text-sm font-medium text-slate-300">Message</label>
-                            <textarea id="message" name="message" rows="5" class="form-input w-full p-3 rounded-md focus:ring-2 focus:ring-sky-500 bg-slate-800/50 border-slate-700 text-white" placeholder="Your message here..." required></textarea>
-                        </div>
-                    
-                        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
-                    
-                        <div class="text-center">
-                             <button type="submit" class="bg-sky-500 text-white font-bold text-lg py-3 px-8 rounded-full hover:bg-sky-600 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-sky-500/20 w-full flex justify-center items-center gap-2">
-                                Send Message
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-                                </svg>
-                            </button>
-                        </div>
+                        <input type="text" name="name" placeholder="Name" class="w-full p-3 rounded-md bg-slate-900 border border-slate-800 text-white outline-none focus:border-sky-500" required>
+                        <input type="email" name="email" placeholder="Email" class="w-full p-3 rounded-md bg-slate-900 border border-slate-800 text-white outline-none focus:border-sky-500" required>
+                        <textarea name="message" rows="4" placeholder="Message" class="w-full p-3 rounded-md bg-slate-900 border border-slate-800 text-white outline-none focus:border-sky-500" required></textarea>
+                        <button type="submit" class="w-full bg-sky-600 py-3 rounded-full font-bold shadow-lg hover:bg-sky-500 transition">Send Message</button>
                     </form>
                 </div>
             </section>
 
-             <footer class="text-center py-6 border-t border-slate-800 mt-12">
-                <p class="text-slate-500">&copy; 2026 Deshan Idamegedara. Designed & Built with passion.</p>
+            <footer class="text-center py-10 border-t border-slate-800 mt-12 text-slate-500 text-sm">
+                <p>&copy; 2026 Developed by <span id="f-name" class="text-sky-500 font-semibold">...</span></p>
             </footer>
-
         </div>
     </main>
 
-    <div id="project-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden opacity-0">
-        <div class="modal-content glass-effect rounded-lg shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto transform scale-95">
-            <div class="sticky top-0 glass-effect p-6 border-b border-slate-800 flex justify-between items-center z-10">
-                <h3 id="modal-title" class="text-2xl font-bold text-white"></h3>
-                <button id="modal-close" class="text-gray-400 hover:text-white text-3xl">&times;</button>
-            </div>
-            <div class="p-8">
-                <div id="modal-description" class="prose prose-invert max-w-none text-slate-300"></div>
-                <h4 class="text-lg font-semibold mt-6 mb-2 text-white">Technologies Used:</h4>
-                <p id="modal-tech" class="text-sky-400 font-mono"></p>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC9EJeuno63NWQH79z29nf59p1zbko0Wwg",
+            authDomain: "deshan-portfolio-aacbb.firebaseapp.com",
+            projectId: "deshan-portfolio-aacbb",
+            storageBucket: "deshan-portfolio-aacbb.firebasestorage.app",
+            messagingSenderId: "55323696037",
+            appId: "1:55323696037:web:56896fdd64bc9a28cc664c",
+            measurementId: "G-K7H10VL1V4"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const GITHUB_USERNAME = "deshanmahesh-lab"; 
+
+        async function loadGitHubData() {
+            try {
+                document.getElementById('github-stats-container').innerHTML = `
+                    <img class="w-full rounded-xl" src="https://github-readme-stats.vercel.app/api?username=${GITHUB_USERNAME}&show_icons=true&theme=transparent&hide_border=true&title_color=0ea5e9&icon_color=6366f1&text_color=94a3b8&bg_color=02061700" alt="Stats" />
+                    <img class="w-full rounded-xl" src="https://github-readme-stats.vercel.app/api/top-langs/?username=${GITHUB_USERNAME}&layout=compact&theme=transparent&hide_border=true&title_color=0ea5e9&text_color=94a3b8&bg_color=02061700" alt="Langs" />
+                `;
+
+                const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=15`);
+                const repos = await response.json();
                 
-                <div id="modal-actions" class="mt-8 flex flex-wrap gap-4 pt-6 border-t border-slate-800">
-                    </div>
-            </div>
-        </div>
-    </div>
+                const langData = {}; let total = 0;
+                repos.forEach(r => { if(r.language) { langData[r.language] = (langData[r.language] || 0) + 1; total++; } });
+                const sorted = Object.keys(langData).sort((a,b) => langData[b] - langData[a]);
+                const colors = ["#0ea5e9", "#6366f1", "#a855f7", "#ec4899", "#f59e0b", "#10b981", "#ef4444"];
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Mobile Menu Toggle
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const menuOpenIcon = document.getElementById('menu-open-icon');
-            const menuCloseIcon = document.getElementById('menu-close-icon');
+                document.getElementById('github-bar').innerHTML = sorted.map((l, i) => 
+                    `<div class="github-bar-segment" style="width: ${(langData[l]/total*100)}%; background-color: ${colors[i % colors.length]}"></div>`
+                ).join('');
 
-            mobileMenuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-                menuOpenIcon.classList.toggle('hidden');
-                menuCloseIcon.classList.toggle('hidden');
-                document.body.classList.toggle('overflow-hidden');
-            });
-            
-            const mobileNavLinks = mobileMenu.querySelectorAll('a');
-            mobileNavLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenu.classList.add('hidden');
-                    menuOpenIcon.classList.remove('hidden');
-                    menuCloseIcon.classList.add('hidden');
-                    document.body.classList.remove('overflow-hidden');
-                });
-            });
+                document.getElementById('skills-legend').innerHTML = sorted.slice(0, 8).map((l, i) => `
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full" style="background-color: ${colors[i % colors.length]}"></div>
+                        <span class="text-[10px] font-bold text-slate-300 uppercase">${l}</span>
+                        <span class="text-[9px] text-slate-500">${((langData[l]/total)*100).toFixed(0)}%</span>
+                    </div>`).join('');
 
-            // Project Data (With GitHub Links Placeholder)
-            const projects = [
-                 {
-                    title: "REDA Payroll Management System",
-                    tags: ["Desktop", "Full-Stack", "Electron.js", "FinTech"],
-                    shortDesc: "A robust, offline-first desktop application for automating complex salary calculations and payroll.",
-                    details: `
-                        <ul>
-                            <li><strong>Architected a Scalable Desktop Solution:</strong> Developed a cross-platform desktop application using <strong>Electron.js</strong> and <strong>React (Vite)</strong>, optimized for performance and offline capabilities.</li>
-                            <li><strong>Engineered Complex Financial Algorithms:</strong> Designed dynamic salary calculation logic to handle variable daily rates, overtime computations, and statutory deductions (EPF/ETF).</li>
-                            <li><strong>Resilient Database Layer:</strong> Built a fault-tolerant <strong>MySQL</strong> connection handler with an automated 'smart-connect' algorithm for zero-configuration setup.</li>
-                            <li><strong>Optimized Deployment Pipeline:</strong> Configured electron-builder to generate production-ready Windows installers (.exe) with automated environment setup.</li>
-                        </ul>
-                    `,
-                    tech: "JavaScript (ES6+), React.js, Electron, Node.js, Vite, MySQL, Tailwind CSS.",
-                    github: "https://github.com/deshanmahesh-lab",
-                    demo: "#"
-                },
-                {
-                    title: "Darki Posters | Premium Anime E-commerce",
-                    tags: ["Web", "Full-Stack", "Next.js", "TypeScript"],
-                    shortDesc: "A premium e-commerce platform for anime posters featuring dynamic filtering and shipping logic.",
-                    details: `
-                        <ul>
-                            <li>Developed a high-performance e-commerce platform using <strong>Next.js 14+ (App Router)</strong> and <strong>TypeScript</strong> for type-safe code.</li>
-                            <li>Implemented a responsive and aesthetic UI using <strong>Tailwind CSS</strong>, optimized for showcasing visual art products.</li>
-                            <li>Engineered custom shipping logic based on location (Haragama, Kandy base) and integrated dynamic product filtering.</li>
-                            <li>Structured the project with a strict focus on scalability and modern web standards.</li>
-                        </ul>
-                    `,
-                    tech: "Next.js 14, TypeScript, Tailwind CSS, React.",
-                    github: "https://github.com/deshanmahesh-lab",
-                    demo: "#"
-                },
-                {
-                    title: "National Bank | Enterprise Banking System",
-                    tags: ["Enterprise", "Java EE", "Backend"],
-                    shortDesc: "A secure, multi-tier enterprise application for time-sensitive financial transactions and role-based access.",
-                    details: `
-                        <ul>
-                            <li>Architected a secure, multi-tier enterprise application using Jakarta EE to handle time-sensitive financial transactions and role-based access control (USER and ADMIN roles).</li>
-                            <li>Implemented a persistent EJB timer for automating scheduled fund transfers, ensuring reliability even after server restarts.</li>
-                            <li>Engineered a robust security model using the Jakarta Security API to protect sensitive financial data and restrict access based on user roles.</li>
-                            <li>Successfully load-tested the system to handle 150 concurrent users logging in simultaneously without crashes or timeouts.</li>
-                        </ul>
-                    `,
-                    tech: "Jakarta EE, Enterprise JavaBeans (EJB), Jakarta Security, JPA, Servlets, Payara Server, JMeter.",
-                    github: "https://github.com/deshanmahesh-lab",
-                    demo: "#"
-                },
-                {
-                    title: "Distributed Online Auction System",
-                    tags: ["Enterprise", "Java EE", "Backend", "Real-Time"],
-                    shortDesc: "A real-time, scalable auction platform using a layered architecture with JMS and WebSockets.",
-                    details: `
-                        <ul>
-                            <li>Engineered a robust, layered architecture for a real-time auction platform, separating the web, business logic, and messaging tiers to ensure scalability.</li>
-                            <li>Implemented a real-time bidding system using Java Message Service (JMS) and WebSockets to broadcast instant updates to all connected clients.</li>
-                            <li>Validated system performance under load, successfully handling concurrent bids from 10 users simultaneously without data conflicts.</li>
-                        </ul>
-                    `,
-                    tech: "Java EE, EJB, JMS, ActiveMQ, WebSocket, Servlets, JSP, Payara Server.",
-                    github: "https://github.com/deshanmahesh-lab",
-                    demo: "#"
-                },
-                {
-                    title: "CAM MART | Full-Stack E-commerce Platform",
-                    tags: ["Web", "Full-Stack", "Java", "E-commerce"],
-                    shortDesc: "A complete e-commerce solution using Hibernate, with robust user authentication and order processing.",
-                    details: `
-                        <ul>
-                            <li>Architected a complete e-commerce solution with a Java Servlet and Hibernate backend, featuring secure user authentication with email verification, and comprehensive inventory management.</li>
-                            <li>Engineered a sophisticated shopping cart system that manages items in the user's session and seamlessly transfers them to a persistent, database-backed cart upon login.</li>
-                            <li>Utilized the Hibernate framework for Object-Relational Mapping (ORM), simplifying database interactions and ensuring data integrity.</li>
-                            <li>Successfully integrated the PayHere third-party payment gateway to process secure, real-time financial transactions.</li>
-                        </ul>
-                    `,
-                    tech: "Java Servlets, Hibernate, MySQL, PayHere Payment Gateway, Gson, JSP.",
-                    github: "https://github.com/deshanmahesh-lab",
-                    demo: "#"
-                },
-                {
-                    title: "Garadise | Android M-Commerce Platform",
-                    tags: ["Mobile", "Android", "Firebase"],
-                    shortDesc: "A global M-Commerce Android app for purchasing console games, built to handle high concurrency.",
-                    details: `
-                        <ul>
-                            <li>Developed a global M-Commerce Android application for purchasing console games, engineered to handle up to 10,000 concurrent users.</li>
-                            <li>Integrated Firebase for backend services, including authentication, database management, and push notifications for real-time order updates.</li>
-                            <li>Achieved a 90% user satisfaction rate during usability testing and optimized the app for a 2.5-second average launch time.</li>
-                        </ul>
-                    `,
-                    tech: "Android Studio, Java, Firebase, Google Maps API, PayHere Payment Gateway.",
-                    github: "https://github.com/deshanmahesh-lab",
-                    demo: "#"
-                },
-                {
-                    title: "Select | Web Accommodation Booking Platform",
-                    tags: ["Web", "Full-Stack", "PHP"],
-                    shortDesc: "A booking platform with a complex search engine, secure admin panel, and sales dashboard.",
-                    details: `
-                        <ul>
-                            <li>Engineered a complex back-end search and filtering engine with over 10 different parameters to provide users with tailored accommodation results.</li>
-                            <li>Developed a secure admin login system featuring email-based verification codes using PHPMailer.</li>
-                            <li>Designed and built a full administrative dashboard to monitor sales metrics and manage all platform content.</li>
-                        </ul>
-                    `,
-                    tech: "PHP, HTML, CSS, JavaScript (AJAX), MySQL, Bootstrap.",
-                    github: "https://github.com/deshanmahesh-lab",
-                    demo: "#"
-                },
-                {
-                    title: "Adyapana | Desktop Student Management System",
-                    tags: ["Desktop", "Java"],
-                    shortDesc: "A full-featured student management system with a multi-functional administrative dashboard using Java Swing.",
-                    details: `
-                        <ul>
-                            <li>Architected and implemented a full-featured student management system with a multi-functional administrative dashboard using Java Swing.</li>
-                            <li>Designed a complete relational database schema from the ground up in MySQL to ensure data integrity across all system modules.</li>
-                            <li>Developed a full suite of CRUD (Create, Read, Update, Delete) operations for managing student, teacher, and class records.</li>
-                        </ul>
-                    `,
-                    tech: "Java, Java Swing, MySQL.",
-                    github: "https://github.com/deshanmahesh-lab",
-                    demo: "#"
-                },
-                {
-                    title: "Network Infrastructure Design",
-                    tags: ["Infrastructure", "Networking"],
-                    shortDesc: "Designed a complete LAN infrastructure for an educational facility supporting 80+ concurrent users.",
-                    details: `
-                        <ul>
-                            <li>Designed a complete Local Area Network (LAN) infrastructure for a multi-functional educational facility supporting over 40 workstations and 40 concurrent wireless users.</li>
-                            <li>Developed a detailed network requirements specification, including hardware quotations, budget estimation, and a maintenance strategy to ensure long-term reliability.</li>
-                        </ul>
-                    `,
-                    tech: "Star/Extended Star Topology, CAT6 Cabling, Network Switches, Routers & Firewalls.",
-                    github: "https://github.com/deshanmahesh-lab",
-                    demo: "#"
-                }
-            ];
-
-            const projectGrid = document.getElementById('project-grid');
-            const filterContainer = document.getElementById('project-filters');
-            
-            const modal = document.getElementById('project-modal');
-            const modalTitle = document.getElementById('modal-title');
-            const modalDescription = document.getElementById('modal-description');
-            const modalTech = document.getElementById('modal-tech');
-            const modalActions = document.getElementById('modal-actions');
-            const modalClose = document.getElementById('modal-close');
-
-            let allTags = ['All', ...new Set(projects.flatMap(p => p.tags))];
-            let activeFilter = 'All';
-
-            function renderFilters() {
-                filterContainer.innerHTML = allTags.map(tag => `
-                    <button class="filter-btn px-4 py-2 text-sm font-medium rounded-full transition-colors ${activeFilter === tag ? 'active' : ''}" data-filter="${tag}">
-                        ${tag}
-                    </button>
-                `).join('');
-            }
-
-            function renderProjects() {
-                const filteredProjects = activeFilter === 'All' 
-                    ? projects 
-                    : projects.filter(p => p.tags.includes(activeFilter));
-
-                projectGrid.innerHTML = filteredProjects.map((project, index) => `
-                    <div class="project-card glass-effect rounded-lg overflow-hidden cursor-pointer" data-index="${projects.indexOf(project)}">
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold mb-2 text-white">${project.title}</h3>
-                            <p class="text-slate-400 mb-4 text-sm">${project.shortDesc}</p>
-                            <div class="flex flex-wrap gap-2">
-                                ${project.tags.map(tag => `<span class="bg-slate-700 text-slate-300 text-xs font-semibold px-2.5 py-0.5 rounded-full">${tag}</span>`).join('')}
+                document.getElementById('project-grid').innerHTML = repos.filter(r => !r.fork).map(repo => `
+                    <div class="project-card glass-effect rounded-2xl p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="text-[10px] font-bold text-sky-500 uppercase">${repo.language || 'Project'}</span>
+                                <span class="text-[10px] text-slate-500"><i class="fa-solid fa-star text-yellow-500 mr-1"></i>${repo.stargazers_count}</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-2 truncate uppercase italic">${repo.name.replace(/-/g, ' ')}</h3>
+                            <p class="text-slate-400 text-xs leading-relaxed mb-6 line-clamp-3">${repo.description || 'Visit GitHub to explore the codebase and technical architecture of this repository.'}</p>
+                        </div>
+                        <div class="flex items-center justify-between border-t border-slate-800 pt-4 mt-auto">
+                            <a href="${repo.html_url}" target="_blank" class="text-slate-400 hover:text-white transition"><i class="fa-brands fa-github text-2xl"></i></a>
+                            <div class="flex gap-1">
+                                ${repo.topics ? repo.topics.slice(0,2).map(t => `<span class="text-[8px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded uppercase font-black tracking-tighter">${t}</span>`).join('') : ''}
                             </div>
                         </div>
-                    </div>
-                `).join('');
+                    </div>`).join('');
+            } catch (e) { console.error(e); }
+        }
+
+        async function loadFirebase() {
+            const hSnap = await getDoc(doc(db, "siteConfig", "hero"));
+            if(hSnap.exists()){
+                const d = hSnap.data();
+                document.getElementById('nav-logo').innerText = d.name;
+                document.getElementById('h-name').innerText = d.name;
+                document.getElementById('h-headline').innerText = d.headline;
+                document.getElementById('h-bio').innerText = d.bio;
+                document.getElementById('f-name').innerText = d.name;
+                // CV URL from Firebase is no longer used for the button, as it's now local -
+                document.getElementById('contact-bar').innerHTML = `
+                    <a href="mailto:${d.email}" class="hover:text-sky-400 transition">${d.email}</a>
+                    <span class="text-slate-700 mx-2">&bull;</span>
+                    <a href="tel:${d.phone}" class="hover:text-sky-400 transition">${d.phone}</a>`;
             }
 
-            function openModal(project) {
-                modalTitle.textContent = project.title;
-                modalDescription.innerHTML = project.details;
-                modalTech.textContent = project.tech;
-                
-                // --- NEW: Generate Action Buttons ---
-                modalActions.innerHTML = '';
-                
-                // GitHub Button
-                if(project.github) {
-                    modalActions.innerHTML += `
-                        <a href="${project.github}" target="_blank" class="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg transition-colors border border-slate-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                            View Code
-                        </a>
-                    `;
-                }
+            const sSnap = await getDocs(query(collection(db, "socials"), orderBy("timestamp", "asc")));
+            document.getElementById('social-bar').innerHTML = sSnap.docs.map(s => {
+                const u = s.data().url;
+                const i = u.includes('github')?'fa-brands fa-github':u.includes('linkedin')?'fa-brands fa-linkedin':'fa-solid fa-link';
+                return `<a href="${u}" target="_blank" class="text-slate-500 hover:text-sky-400 transition transform hover:scale-110"><i class="${i}"></i></a>`;
+            }).join('');
 
-                // Live Demo Button
-                if(project.demo && project.demo !== '#') {
-                    modalActions.innerHTML += `
-                        <a href="${project.demo}" target="_blank" class="flex items-center gap-2 bg-sky-600 hover:bg-sky-500 text-white px-4 py-2 rounded-lg transition-colors shadow-lg shadow-sky-500/20">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                            Live Demo
-                        </a>
-                    `;
-                } else {
-                     // Placeholder for Demo if not available
-                     modalActions.innerHTML += `
-                        <span class="flex items-center gap-2 bg-slate-800/50 text-slate-500 px-4 py-2 rounded-lg border border-slate-800 cursor-not-allowed">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
-                            Demo N/A
-                        </span>
-                    `;
-                }
-                // ------------------------------------
+            const eSnap = await getDocs(query(collection(db, "education"), orderBy("timestamp", "desc")));
+            document.getElementById('edu-timeline').innerHTML = eSnap.docs.map(d => `
+                <div class="relative pl-4 mb-10">
+                    <div class="absolute -left-[49px] top-2 w-5 h-5 bg-sky-500 rounded-full border-4 border-slate-950 shadow-md"></div>
+                    <p class="text-xs text-sky-400 font-mono font-bold">${d.data().year}</p>
+                    <h3 class="text-xl font-semibold text-white mt-1">${d.data().title}</h3>
+                    <p class="text-sm text-slate-400 italic">${d.data().inst}</p>
+                </div>`).join('');
+        }
 
-                modal.classList.remove('hidden');
-                setTimeout(() => {
-                    modal.classList.remove('opacity-0');
-                    modal.querySelector('.modal-content').classList.remove('scale-95');
-                }, 10);
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeModal() {
-                modal.classList.add('opacity-0');
-                modal.querySelector('.modal-content').classList.add('scale-95');
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    document.body.style.overflow = '';
-                }, 300);
-            }
-            
-            filterContainer.addEventListener('click', (e) => {
-                if (e.target.matches('.filter-btn')) {
-                    activeFilter = e.target.dataset.filter;
-                    renderFilters();
-                    renderProjects();
-                }
-            });
-
-            projectGrid.addEventListener('click', (e) => {
-                const card = e.target.closest('.project-card');
-                if (card) {
-                    const projectIndex = parseInt(card.dataset.index, 10);
-                    openModal(projects[projectIndex]);
-                }
-            });
-
-            modalClose.addEventListener('click', closeModal);
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    closeModal();
-                }
-            });
-
-            renderFilters();
-            renderProjects();
-
-            const ctx = document.getElementById('skillsChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: ['Enterprise Java', 'Frontend (React/Next)', 'Backend (Node/PHP)', 'Mobile/Desktop', 'Databases', 'DevOps/Tools'],
-                    datasets: [{
-                        label: 'Proficiency',
-                        data: [9, 8, 8, 9, 9, 7],
-                        backgroundColor: 'rgba(56, 189, 248, 0.2)',
-                        borderColor: 'rgb(56, 189, 248)',
-                        pointBackgroundColor: 'rgb(56, 189, 248)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgb(56, 189, 248)'
-                    }]
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    scales: {
-                        r: {
-                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
-                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                            pointLabels: { 
-                                font: { size: 12, family: "'Inter', sans-serif" },
-                                color: '#cbd5e1'
-                             },
-                            suggestedMin: 0,
-                            suggestedMax: 10,
-                            ticks: {
-                                backdropColor: 'rgba(2, 6, 23, 0.5)',
-                                color: '#94a3b8',
-                                stepSize: 2
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    }
-                }
-            });
-            
-            const navLinks = document.querySelectorAll('.nav-link');
-            const sections = document.querySelectorAll('main section');
-
-            window.addEventListener('scroll', () => {
-                let current = 'home';
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    if (window.scrollY >= sectionTop - 120) {
-                        current = section.getAttribute('id');
-                    }
-                });
-
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href').includes(current)) {
-                        link.classList.add('active');
-                    }
-                });
-            });
-        });
+        loadGitHubData(); loadFirebase();
     </script>
 </body>
 </html>
