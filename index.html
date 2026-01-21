@@ -3,17 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <meta property="og:title" content="Deshan Idamegedara | Full-Stack Software Engineer">
     <meta property="og:description" content="Portfolio of Deshan Idamegedara - Featuring projects like REDA Payroll System, Darki Posters, and Enterprise Java Solutions.">
     <meta property="og:image" content="https://deshanmahesh-lab.github.io/my-portfolio/IMG_0608-removebg-preview.png">
     <meta property="og:url" content="https://deshanmahesh-lab.github.io/my-portfolio/">
     
+    <link rel="icon" type="image/png" href="IMG_0608-removebg-preview.png">
+
     <title>Deshan Idamegedara - Full-Stack Developer</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --glow-color-1: #0ea5e9; /* sky-500 */
@@ -27,6 +32,7 @@
             color: #d1d5db; /* gray-300 */
         }
 
+        /* Aurora Background Animation */
         .aurora-background {
             position: fixed;
             top: 0;
@@ -74,9 +80,7 @@
             100% { transform: translate(-90vw, -70vh) scale(0.8); }
         }
         
-        .font-mono {
-            font-family: 'Roboto Mono', monospace;
-        }
+        .font-mono { font-family: 'Roboto Mono', monospace; }
 
         .glass-effect {
             background: rgba(15, 23, 42, 0.6);
@@ -95,9 +99,7 @@
             max-height: 450px;
         }
         @media (min-width: 768px) {
-            .chart-container {
-                height: 450px;
-            }
+            .chart-container { height: 450px; }
         }
         
         .modal-overlay { transition: opacity 0.3s ease; }
@@ -185,13 +187,12 @@
         </nav>
     </div>
 
-
     <main class="w-full pt-16">
         <div class="container mx-auto px-6 md:px-12">
             
             <section id="home" class="min-h-screen flex flex-col justify-center">
                 <div class="max-w-4xl mx-auto text-center">
-                    <img src="IMG_0608-removebg-preview.png" alt="Deshan Idamegedara - Profile Picture" class="w-48 h-48 rounded-full mx-auto mb-8 border-4 border-slate-700 shadow-lg">
+                    <img src="IMG_0608-removebg-preview.png" alt="Deshan Idamegedara" class="w-48 h-48 rounded-full mx-auto mb-8 border-4 border-slate-700 shadow-lg">
                     <h1 class="text-5xl md:text-7xl font-bold tracking-tight text-white mb-4">Deshan Idamegedara</h1>
                     <h2 class="text-2xl md:text-3xl font-medium bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400 mb-8">Full-Stack Software Engineer</h2>
                     <p class="text-lg text-slate-400 max-w-3xl mx-auto leading-relaxed mb-8">
@@ -248,7 +249,7 @@
 
             <section id="projects" class="py-20">
                 <h2 class="text-4xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400">Projects Portfolio</h2>
-                <p class="text-center text-slate-400 mb-8 max-w-2xl mx-auto">An interactive showcase of my key projects. Use the filters to explore different technologies and click on any project card to see more details about its architecture and implementation.</p>
+                <p class="text-center text-slate-400 mb-8 max-w-2xl mx-auto">An interactive showcase of my key projects. Click on any project to view technical details, code, and demos.</p>
                 <div id="project-filters" class="flex flex-wrap justify-center gap-2 mb-12">
                 </div>
                 <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -331,6 +332,9 @@
                 <div id="modal-description" class="prose prose-invert max-w-none text-slate-300"></div>
                 <h4 class="text-lg font-semibold mt-6 mb-2 text-white">Technologies Used:</h4>
                 <p id="modal-tech" class="text-sky-400 font-mono"></p>
+                
+                <div id="modal-actions" class="mt-8 flex flex-wrap gap-4 pt-6 border-t border-slate-800">
+                    </div>
             </div>
         </div>
     </div>
@@ -350,7 +354,6 @@
                 document.body.classList.toggle('overflow-hidden');
             });
             
-            // Close mobile menu when a link is clicked
             const mobileNavLinks = mobileMenu.querySelectorAll('a');
             mobileNavLinks.forEach(link => {
                 link.addEventListener('click', () => {
@@ -361,7 +364,7 @@
                 });
             });
 
-
+            // Project Data (With GitHub Links Placeholder)
             const projects = [
                  {
                     title: "REDA Payroll Management System",
@@ -375,7 +378,9 @@
                             <li><strong>Optimized Deployment Pipeline:</strong> Configured electron-builder to generate production-ready Windows installers (.exe) with automated environment setup.</li>
                         </ul>
                     `,
-                    tech: "JavaScript (ES6+), React.js, Electron, Node.js, Vite, MySQL, Tailwind CSS."
+                    tech: "JavaScript (ES6+), React.js, Electron, Node.js, Vite, MySQL, Tailwind CSS.",
+                    github: "https://github.com/deshanmahesh-lab",
+                    demo: "#"
                 },
                 {
                     title: "Darki Posters | Premium Anime E-commerce",
@@ -389,7 +394,9 @@
                             <li>Structured the project with a strict focus on scalability and modern web standards.</li>
                         </ul>
                     `,
-                    tech: "Next.js 14, TypeScript, Tailwind CSS, React."
+                    tech: "Next.js 14, TypeScript, Tailwind CSS, React.",
+                    github: "https://github.com/deshanmahesh-lab",
+                    demo: "#"
                 },
                 {
                     title: "National Bank | Enterprise Banking System",
@@ -403,7 +410,9 @@
                             <li>Successfully load-tested the system to handle 150 concurrent users logging in simultaneously without crashes or timeouts.</li>
                         </ul>
                     `,
-                    tech: "Jakarta EE, Enterprise JavaBeans (EJB), Jakarta Security, JPA, Servlets, Payara Server, JMeter."
+                    tech: "Jakarta EE, Enterprise JavaBeans (EJB), Jakarta Security, JPA, Servlets, Payara Server, JMeter.",
+                    github: "https://github.com/deshanmahesh-lab",
+                    demo: "#"
                 },
                 {
                     title: "Distributed Online Auction System",
@@ -416,7 +425,9 @@
                             <li>Validated system performance under load, successfully handling concurrent bids from 10 users simultaneously without data conflicts.</li>
                         </ul>
                     `,
-                    tech: "Java EE, EJB, JMS, ActiveMQ, WebSocket, Servlets, JSP, Payara Server."
+                    tech: "Java EE, EJB, JMS, ActiveMQ, WebSocket, Servlets, JSP, Payara Server.",
+                    github: "https://github.com/deshanmahesh-lab",
+                    demo: "#"
                 },
                 {
                     title: "CAM MART | Full-Stack E-commerce Platform",
@@ -430,7 +441,9 @@
                             <li>Successfully integrated the PayHere third-party payment gateway to process secure, real-time financial transactions.</li>
                         </ul>
                     `,
-                    tech: "Java Servlets, Hibernate, MySQL, PayHere Payment Gateway, Gson, JSP."
+                    tech: "Java Servlets, Hibernate, MySQL, PayHere Payment Gateway, Gson, JSP.",
+                    github: "https://github.com/deshanmahesh-lab",
+                    demo: "#"
                 },
                 {
                     title: "Garadise | Android M-Commerce Platform",
@@ -443,7 +456,9 @@
                             <li>Achieved a 90% user satisfaction rate during usability testing and optimized the app for a 2.5-second average launch time.</li>
                         </ul>
                     `,
-                    tech: "Android Studio, Java, Firebase, Google Maps API, PayHere Payment Gateway."
+                    tech: "Android Studio, Java, Firebase, Google Maps API, PayHere Payment Gateway.",
+                    github: "https://github.com/deshanmahesh-lab",
+                    demo: "#"
                 },
                 {
                     title: "Select | Web Accommodation Booking Platform",
@@ -456,7 +471,9 @@
                             <li>Designed and built a full administrative dashboard to monitor sales metrics and manage all platform content.</li>
                         </ul>
                     `,
-                    tech: "PHP, HTML, CSS, JavaScript (AJAX), MySQL, Bootstrap."
+                    tech: "PHP, HTML, CSS, JavaScript (AJAX), MySQL, Bootstrap.",
+                    github: "https://github.com/deshanmahesh-lab",
+                    demo: "#"
                 },
                 {
                     title: "Adyapana | Desktop Student Management System",
@@ -469,7 +486,9 @@
                             <li>Developed a full suite of CRUD (Create, Read, Update, Delete) operations for managing student, teacher, and class records.</li>
                         </ul>
                     `,
-                    tech: "Java, Java Swing, MySQL."
+                    tech: "Java, Java Swing, MySQL.",
+                    github: "https://github.com/deshanmahesh-lab",
+                    demo: "#"
                 },
                 {
                     title: "Network Infrastructure Design",
@@ -481,7 +500,9 @@
                             <li>Developed a detailed network requirements specification, including hardware quotations, budget estimation, and a maintenance strategy to ensure long-term reliability.</li>
                         </ul>
                     `,
-                    tech: "Star/Extended Star Topology, CAT6 Cabling, Network Switches, Routers & Firewalls."
+                    tech: "Star/Extended Star Topology, CAT6 Cabling, Network Switches, Routers & Firewalls.",
+                    github: "https://github.com/deshanmahesh-lab",
+                    demo: "#"
                 }
             ];
 
@@ -492,6 +513,7 @@
             const modalTitle = document.getElementById('modal-title');
             const modalDescription = document.getElementById('modal-description');
             const modalTech = document.getElementById('modal-tech');
+            const modalActions = document.getElementById('modal-actions');
             const modalClose = document.getElementById('modal-close');
 
             let allTags = ['All', ...new Set(projects.flatMap(p => p.tags))];
@@ -527,6 +549,39 @@
                 modalTitle.textContent = project.title;
                 modalDescription.innerHTML = project.details;
                 modalTech.textContent = project.tech;
+                
+                // --- NEW: Generate Action Buttons ---
+                modalActions.innerHTML = '';
+                
+                // GitHub Button
+                if(project.github) {
+                    modalActions.innerHTML += `
+                        <a href="${project.github}" target="_blank" class="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg transition-colors border border-slate-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                            View Code
+                        </a>
+                    `;
+                }
+
+                // Live Demo Button
+                if(project.demo && project.demo !== '#') {
+                    modalActions.innerHTML += `
+                        <a href="${project.demo}" target="_blank" class="flex items-center gap-2 bg-sky-600 hover:bg-sky-500 text-white px-4 py-2 rounded-lg transition-colors shadow-lg shadow-sky-500/20">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                            Live Demo
+                        </a>
+                    `;
+                } else {
+                     // Placeholder for Demo if not available
+                     modalActions.innerHTML += `
+                        <span class="flex items-center gap-2 bg-slate-800/50 text-slate-500 px-4 py-2 rounded-lg border border-slate-800 cursor-not-allowed">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+                            Demo N/A
+                        </span>
+                    `;
+                }
+                // ------------------------------------
+
                 modal.classList.remove('hidden');
                 setTimeout(() => {
                     modal.classList.remove('opacity-0');
@@ -632,9 +687,6 @@
                     }
                 });
             });
-
-            // Contact Form Script Removed (Handled by Web3Forms directly in HTML)
-
         });
     </script>
 </body>
