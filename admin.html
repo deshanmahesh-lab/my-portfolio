@@ -75,18 +75,57 @@
         
         label { color: #38bdf8; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px; display: block; }
 
-        /* Login shake animation for wrong password */
         @keyframes shake {
             0%,100% { transform: translateX(0); }
             20%,60% { transform: translateX(-8px); }
             40%,80% { transform: translateX(8px); }
         }
         .shake { animation: shake 0.4s ease; }
+
+        /* ── Toast System ──────────────────────────────────────── */
+        #toast-container {
+            position: fixed; top: 24px; right: 24px;
+            z-index: 9999; display: flex; flex-direction: column; gap: 10px;
+            pointer-events: none;
+        }
+        .toast {
+            display: flex; align-items: center; gap: 12px;
+            padding: 14px 20px; border-radius: 14px; min-width: 260px;
+            font-size: 13px; font-weight: 700;
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.12);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            animation: toastIn 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
+            pointer-events: all;
+        }
+        .toast.hide { animation: toastOut 0.3s ease forwards; }
+        .toast.success { background: rgba(16,185,129,0.15); color: #6ee7b7; border-color: rgba(16,185,129,0.3); }
+        .toast.error   { background: rgba(239,68,68,0.15);  color: #fca5a5; border-color: rgba(239,68,68,0.3); }
+        .toast.info    { background: rgba(14,165,233,0.15); color: #7dd3fc; border-color: rgba(14,165,233,0.3); }
+        @keyframes toastIn  { from { opacity:0; transform: translateX(60px) scale(0.9); } to { opacity:1; transform: translateX(0) scale(1); } }
+        @keyframes toastOut { from { opacity:1; transform: translateX(0); } to { opacity:0; transform: translateX(60px); } }
+
+        /* ── Button loading state ─────────────────────────────── */
+        .btn-save { position: relative; overflow: hidden; transition: all 0.2s; }
+        .btn-save:disabled { opacity: 0.7; cursor: not-allowed; transform: none !important; }
+        .btn-save .btn-spinner {
+            display: none; width: 16px; height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white; border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        .btn-save.loading .btn-spinner { display: inline-block; }
+        .btn-save.loading .btn-text { opacity: 0.6; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="p-4 md:p-10">
     <div class="aurora-background"></div>
 
+    <!-- Toast container -->
+    <div id="toast-container"></div>
+
+    <!-- Login Screen -->
     <div id="login-screen" class="fixed inset-0 bg-slate-950 flex items-center justify-center z-[100]">
         <div id="login-card" class="glass-effect p-10 rounded-3xl w-full max-w-md shadow-2xl text-center">
             <div class="mb-6">
@@ -96,26 +135,35 @@
                 <h2 class="text-3xl font-black text-white uppercase italic tracking-tighter">Identity Check</h2>
                 <p class="text-slate-500 text-xs mt-2 uppercase font-bold">Authorized Personnel Only</p>
             </div>
-            <!-- FIX: Enter key triggers login via keydown listener -->
             <input type="password" id="admin-pass" class="form-input text-center text-xl tracking-widest" placeholder="••••••••">
             <p id="login-error" class="text-red-400 text-xs font-bold mb-3 hidden">Verification Failed. Try again.</p>
-            <button onclick="checkPass()" class="w-full bg-sky-600 hover:bg-sky-500 py-4 rounded-xl font-black uppercase italic transition transform hover:scale-105 shadow-lg shadow-sky-900/40">Enter Dashboard</button>
+
+            <!-- Login button with loading state -->
+            <button id="login-btn" onclick="checkPass()" class="btn-save w-full bg-sky-600 hover:bg-sky-500 py-4 rounded-xl font-black uppercase italic transition transform hover:scale-105 shadow-lg shadow-sky-900/40 flex items-center justify-center gap-3">
+                <div class="btn-spinner"></div>
+                <span class="btn-text">Enter Dashboard</span>
+            </button>
         </div>
     </div>
 
+    <!-- Admin Panel -->
     <div id="admin-panel" class="hidden max-w-5xl mx-auto pt-10">
         <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-4 border-b border-slate-800 pb-8">
-            <h1 class="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-500 uppercase italic">CMS Control v3.0</h1>
+            <div>
+                <h1 class="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-500 uppercase italic">CMS Control v3.0</h1>
+                <!-- Auth status indicator -->
+                <p id="auth-status" class="text-xs text-slate-600 mt-1 font-mono">Initializing...</p>
+            </div>
             <button onclick="location.reload()" class="text-slate-400 hover:text-white bg-slate-800/50 border border-slate-700 px-6 py-2 rounded-full text-xs font-black uppercase transition">Sign Out</button>
         </div>
 
-        <!-- FIX: switchTab now receives the button element directly via onclick(this) -->
         <div class="flex gap-10 mb-12 overflow-x-auto whitespace-nowrap scrollbar-hide pb-2">
             <button onclick="switchTab('tab-hero', this)" class="tab-btn active uppercase italic tracking-widest text-sm">🏠 Profile Hub</button>
-            <button onclick="switchTab('tab-edu', this)" class="tab-btn uppercase italic tracking-widest text-sm">🎓 Academy History</button>
+            <button onclick="switchTab('tab-edu', this)"  class="tab-btn uppercase italic tracking-widest text-sm">🎓 Academy History</button>
             <button onclick="switchTab('tab-proj', this)" class="tab-btn uppercase italic tracking-widest text-sm">🚀 GitHub Automation</button>
         </div>
 
+        <!-- Tab: Profile Hub -->
         <div id="tab-hero" class="tab-content active space-y-10">
             <div class="glass-effect p-8 rounded-3xl shadow-xl">
                 <h3 class="text-white font-black mb-8 uppercase italic tracking-widest text-lg border-l-4 border-sky-500 pl-4">Core Identity</h3>
@@ -125,10 +173,16 @@
                         <div><label>Professional Headline</label><input type="text" id="h_headline" class="form-input" required></div>
                         <div><label>Direct Contact</label><input type="text" id="h_phone" class="form-input"></div>
                         <div><label>Work Email</label><input type="email" id="h_email" class="form-input"></div>
-                        <div class="col-span-2"><label>CV / Resume URL <span class="text-slate-500 normal-case font-normal tracking-normal">(Google Drive share link, Dropbox, etc.)</span></label><input type="text" id="h_cv" class="form-input" placeholder="https://drive.google.com/..."></div>
+                        <div class="col-span-2">
+                            <label>CV / Resume URL <span class="text-slate-500 normal-case font-normal tracking-normal">(Google Drive share link)</span></label>
+                            <input type="text" id="h_cv" class="form-input" placeholder="https://drive.google.com/...">
+                        </div>
                         <div class="col-span-2"><label>Executive Bio</label><textarea id="h_bio" rows="4" class="form-input"></textarea></div>
                     </div>
-                    <button type="submit" class="w-full bg-sky-600 py-4 rounded-xl font-black mt-6 uppercase italic shadow-lg hover:bg-sky-500 transition-all transform hover:translate-y-[-2px]">Save Changes</button>
+                    <button type="submit" id="hero-save-btn" class="btn-save w-full bg-sky-600 py-4 rounded-xl font-black mt-6 uppercase italic shadow-lg hover:bg-sky-500 transition-all transform hover:translate-y-[-2px] flex items-center justify-center gap-3">
+                        <div class="btn-spinner"></div>
+                        <span class="btn-text">💾 Save Changes</span>
+                    </button>
                 </form>
             </div>
 
@@ -139,12 +193,16 @@
                         <label>Target URL (GitHub, LinkedIn, etc.)</label>
                         <input type="url" id="s_url" class="form-input mb-0" placeholder="https://..." required>
                     </div>
-                    <button type="submit" class="bg-indigo-600 h-[48px] mt-auto px-10 rounded-xl font-black uppercase italic hover:bg-indigo-500 transition shadow-lg shadow-indigo-900/20">Add</button>
+                    <button type="submit" id="social-add-btn" class="btn-save bg-indigo-600 h-[48px] mt-auto px-10 rounded-xl font-black uppercase italic hover:bg-indigo-500 transition shadow-lg shadow-indigo-900/20 flex items-center justify-center gap-2 min-w-[100px]">
+                        <div class="btn-spinner"></div>
+                        <span class="btn-text">Add</span>
+                    </button>
                 </form>
                 <div id="social-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
             </div>
         </div>
 
+        <!-- Tab: Education -->
         <div id="tab-edu" class="tab-content">
             <div class="glass-effect p-8 rounded-3xl shadow-xl mb-10">
                 <h3 class="text-white font-black mb-8 uppercase italic tracking-widest text-lg border-l-4 border-sky-500 pl-4">Add Qualification</h3>
@@ -152,12 +210,16 @@
                     <div><label>Degree / Diploma</label><input type="text" id="e_title" class="form-input" placeholder="BEng (Hons)..." required></div>
                     <div><label>Institution</label><input type="text" id="e_inst" class="form-input" placeholder="University..." required></div>
                     <div><label>Duration Period</label><input type="text" id="e_year" class="form-input" placeholder="2022 - 2026" required></div>
-                    <button type="submit" class="md:col-span-3 bg-sky-600 py-4 rounded-xl font-black uppercase italic hover:bg-sky-500 transition shadow-lg">Commit to Timeline</button>
+                    <button type="submit" id="edu-save-btn" class="btn-save md:col-span-3 bg-sky-600 py-4 rounded-xl font-black uppercase italic hover:bg-sky-500 transition shadow-lg flex items-center justify-center gap-3">
+                        <div class="btn-spinner"></div>
+                        <span class="btn-text">📚 Commit to Timeline</span>
+                    </button>
                 </form>
             </div>
             <div id="edu-list" class="space-y-4"></div>
         </div>
 
+        <!-- Tab: GitHub -->
         <div id="tab-proj" class="tab-content">
             <div class="glass-effect p-12 rounded-3xl shadow-xl text-center border border-sky-500/20">
                 <div class="w-24 h-24 bg-slate-900 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl border border-slate-800">
@@ -184,43 +246,89 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, deleteDoc, query, orderBy }
+            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyC9EJeuno63NWQH79z29nf59p1zbko0Wwg",
-            authDomain: "deshan-portfolio-aacbb.firebaseapp.com",
-            projectId: "deshan-portfolio-aacbb",
-            storageBucket: "deshan-portfolio-aacbb.firebasestorage.app",
+            apiKey:            "AIzaSyC9EJeuno63NWQH79z29nf59p1zbko0Wwg",
+            authDomain:        "deshan-portfolio-aacbb.firebaseapp.com",
+            projectId:         "deshan-portfolio-aacbb",
+            storageBucket:     "deshan-portfolio-aacbb.firebasestorage.app",
             messagingSenderId: "55323696037",
-            appId: "1:55323696037:web:56896fdd64bc9a28cc664c",
-            measurementId: "G-K7H10VL1V4"
+            appId:             "1:55323696037:web:56896fdd64bc9a28cc664c",
+            measurementId:     "G-K7H10VL1V4"
         };
-        const app = initializeApp(firebaseConfig);
-        const db  = getFirestore(app);
 
-        // ── FIX: Enter key on password field ──────────────────────────
+        const app  = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db   = getFirestore(app);
+
+        // ── Toast Helper ────────────────────────────────────────────
+        function toast(message, type = 'success') {
+            const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', info: 'fa-circle-info' };
+            const container = document.getElementById('toast-container');
+            const el = document.createElement('div');
+            el.className = `toast ${type}`;
+            el.innerHTML = `<i class="fa-solid ${icons[type]}"></i><span>${message}</span>`;
+            container.appendChild(el);
+            setTimeout(() => {
+                el.classList.add('hide');
+                setTimeout(() => el.remove(), 300);
+            }, 3500);
+        }
+
+        // ── Button Loading State Helpers ─────────────────────────────
+        function btnLoading(btn, on) {
+            btn.disabled = on;
+            btn.classList.toggle('loading', on);
+        }
+
+        // ── Enter key on login ───────────────────────────────────────
         document.getElementById('admin-pass').addEventListener('keydown', e => {
             if (e.key === 'Enter') checkPass();
         });
 
-        window.checkPass = () => {
-            const pass  = document.getElementById('admin-pass').value;
-            const card  = document.getElementById('login-card');
-            const error = document.getElementById('login-error');
-            if (pass === "deshan123") {
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('admin-panel').classList.remove('hidden');
-                loadAllData();
-            } else {
+        // ── Login: password check → anonymous Firebase auth ──────────
+        window.checkPass = async () => {
+            const pass    = document.getElementById('admin-pass').value;
+            const card    = document.getElementById('login-card');
+            const error   = document.getElementById('login-error');
+            const loginBtn = document.getElementById('login-btn');
+
+            if (pass !== "deshan123") {
                 error.classList.remove('hidden');
                 card.classList.remove('shake');
-                void card.offsetWidth; // reflow to restart animation
+                void card.offsetWidth;
                 card.classList.add('shake');
                 document.getElementById('admin-pass').value = '';
+                return;
+            }
+
+            // Correct password — sign in anonymously to Firebase Auth
+            btnLoading(loginBtn, true);
+            try {
+                await signInAnonymously(auth);
+                // onAuthStateChanged will handle revealing the panel
+            } catch (err) {
+                btnLoading(loginBtn, false);
+                error.textContent = 'Firebase Auth failed: ' + err.message;
+                error.classList.remove('hidden');
             }
         };
 
-        // ── FIX: switchTab receives the button element, no global event ──
+        // ── Auth state: reveal panel only after Firebase confirms sign-in ──
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('admin-panel').classList.remove('hidden');
+                document.getElementById('auth-status').textContent = `✓ Authenticated — UID: ${user.uid.slice(0,8)}...`;
+                document.getElementById('auth-status').style.color = '#22c55e';
+                loadAllData();
+            }
+        });
+
+        // ── Tab switcher ─────────────────────────────────────────────
         window.switchTab = (id, btn) => {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -228,82 +336,145 @@
             if (btn) btn.classList.add('active');
         };
 
+        // ── Load all data ────────────────────────────────────────────
         async function loadAllData() {
-            const h = await getDoc(doc(db, "siteConfig", "hero"));
-            if (h.exists()) {
-                const d = h.data();
-                document.getElementById('h_name').value     = d.name     || '';
-                document.getElementById('h_headline').value = d.headline || '';
-                document.getElementById('h_phone').value    = d.phone    || '';
-                document.getElementById('h_email').value    = d.email    || '';
-                document.getElementById('h_cv').value       = d.cv       || '';
-                document.getElementById('h_bio').value      = d.bio      || '';
+            try {
+                const h = await getDoc(doc(db, "siteConfig", "hero"));
+                if (h.exists()) {
+                    const d = h.data();
+                    document.getElementById('h_name').value     = d.name     || '';
+                    document.getElementById('h_headline').value = d.headline || '';
+                    document.getElementById('h_phone').value    = d.phone    || '';
+                    document.getElementById('h_email').value    = d.email    || '';
+                    document.getElementById('h_cv').value       = d.cv       || '';
+                    document.getElementById('h_bio').value      = d.bio      || '';
+                }
+                await renderSocials();
+                await renderEdu();
+            } catch(err) {
+                toast('Data load failed: ' + err.message, 'error');
             }
-            renderSocials();
-            renderEdu();
         }
 
+        // ── Hero Form ────────────────────────────────────────────────
         document.getElementById('heroForm').onsubmit = async (e) => {
             e.preventDefault();
-            await setDoc(doc(db, "siteConfig", "hero"), {
-                name:     document.getElementById('h_name').value,
-                headline: document.getElementById('h_headline').value,
-                phone:    document.getElementById('h_phone').value,
-                email:    document.getElementById('h_email').value,
-                cv:       document.getElementById('h_cv').value,
-                bio:      document.getElementById('h_bio').value
-            }, { merge: true });
-            alert("Core Profile Updated!");
+            const btn = document.getElementById('hero-save-btn');
+            btnLoading(btn, true);
+            try {
+                await setDoc(doc(db, "siteConfig", "hero"), {
+                    name:     document.getElementById('h_name').value,
+                    headline: document.getElementById('h_headline').value,
+                    phone:    document.getElementById('h_phone').value,
+                    email:    document.getElementById('h_email').value,
+                    cv:       document.getElementById('h_cv').value,
+                    bio:      document.getElementById('h_bio').value
+                }, { merge: true });
+                toast('✅ Profile saved successfully!', 'success');
+            } catch(err) {
+                // Show the actual Firebase error — helps debug rules issues
+                toast('Save failed: ' + err.message, 'error');
+                console.error('Hero save error:', err);
+            } finally {
+                btnLoading(btn, false);
+            }
         };
 
+        // ── Social Form ──────────────────────────────────────────────
         document.getElementById('socialForm').onsubmit = async (e) => {
             e.preventDefault();
+            const btn = document.getElementById('social-add-btn');
             const url = document.getElementById('s_url').value;
-            await addDoc(collection(db, "socials"), { url, timestamp: new Date() });
-            document.getElementById('s_url').value = '';
-            renderSocials();
+            btnLoading(btn, true);
+            try {
+                await addDoc(collection(db, "socials"), { url, timestamp: new Date() });
+                document.getElementById('s_url').value = '';
+                toast('🔗 Social link added!', 'success');
+                await renderSocials();
+            } catch(err) {
+                toast('Add failed: ' + err.message, 'error');
+                console.error('Social add error:', err);
+            } finally {
+                btnLoading(btn, false);
+            }
         };
 
         async function renderSocials() {
-            const snap = await getDocs(query(collection(db,"socials"), orderBy("timestamp","asc")));
-            document.getElementById('social-list').innerHTML = snap.docs.map(d => `
-                <div class="bg-slate-900/50 p-4 rounded-2xl flex justify-between items-center border border-slate-800">
-                    <span class="text-xs truncate max-w-[80%] font-mono text-slate-500 italic">${d.data().url}</span>
-                    <button class="text-red-400 hover:bg-red-500/10 w-8 h-8 rounded-lg transition" onclick="deleteSocial('${d.id}')">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                </div>`).join('');
+            try {
+                const snap = await getDocs(query(collection(db, "socials"), orderBy("timestamp", "asc")));
+                document.getElementById('social-list').innerHTML = snap.docs.map(d => `
+                    <div class="bg-slate-900/50 p-4 rounded-2xl flex justify-between items-center border border-slate-800">
+                        <span class="text-xs truncate max-w-[80%] font-mono text-slate-500 italic">${d.data().url}</span>
+                        <button class="text-red-400 hover:bg-red-500/10 w-8 h-8 rounded-lg transition" onclick="deleteSocial('${d.id}')">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>`).join('');
+            } catch(err) {
+                toast('Failed to load socials: ' + err.message, 'error');
+            }
         }
+
         window.deleteSocial = async (id) => {
-            if (confirm("Remove this link?")) { await deleteDoc(doc(db,"socials",id)); renderSocials(); }
+            if (!confirm("Remove this link?")) return;
+            try {
+                await deleteDoc(doc(db, "socials", id));
+                toast('Link removed', 'info');
+                await renderSocials();
+            } catch(err) {
+                toast('Delete failed: ' + err.message, 'error');
+            }
         };
 
+        // ── Education Form ───────────────────────────────────────────
         document.getElementById('eduForm').onsubmit = async (e) => {
             e.preventDefault();
-            await addDoc(collection(db,"education"), {
-                title:     document.getElementById('e_title').value,
-                inst:      document.getElementById('e_inst').value,
-                year:      document.getElementById('e_year').value,
-                timestamp: new Date()
-            });
-            renderEdu(); e.target.reset();
+            const btn = document.getElementById('edu-save-btn');
+            btnLoading(btn, true);
+            try {
+                await addDoc(collection(db, "education"), {
+                    title:     document.getElementById('e_title').value,
+                    inst:      document.getElementById('e_inst').value,
+                    year:      document.getElementById('e_year').value,
+                    timestamp: new Date()
+                });
+                toast('🎓 Education record added!', 'success');
+                e.target.reset();
+                await renderEdu();
+            } catch(err) {
+                toast('Save failed: ' + err.message, 'error');
+                console.error('Education save error:', err);
+            } finally {
+                btnLoading(btn, false);
+            }
         };
 
         async function renderEdu() {
-            const snap = await getDocs(query(collection(db,"education"), orderBy("timestamp","desc")));
-            document.getElementById('edu-list').innerHTML = snap.docs.map(d => `
-                <div class="glass-effect p-6 rounded-2xl flex justify-between border border-slate-700/50">
-                    <div>
-                        <h4 class="font-bold text-white uppercase italic">${d.data().title}</h4>
-                        <p class="text-sm text-slate-400">${d.data().inst} (${d.data().year})</p>
-                    </div>
-                    <button class="text-red-400 hover:bg-red-500/10 w-10 h-10 rounded-xl transition" onclick="deleteEdu('${d.id}')">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                </div>`).join('');
+            try {
+                const snap = await getDocs(query(collection(db, "education"), orderBy("timestamp", "desc")));
+                document.getElementById('edu-list').innerHTML = snap.docs.map(d => `
+                    <div class="glass-effect p-6 rounded-2xl flex justify-between border border-slate-700/50">
+                        <div>
+                            <h4 class="font-bold text-white uppercase italic">${d.data().title}</h4>
+                            <p class="text-sm text-slate-400">${d.data().inst} (${d.data().year})</p>
+                        </div>
+                        <button class="text-red-400 hover:bg-red-500/10 w-10 h-10 rounded-xl transition" onclick="deleteEdu('${d.id}')">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>`).join('');
+            } catch(err) {
+                toast('Failed to load education: ' + err.message, 'error');
+            }
         }
+
         window.deleteEdu = async (id) => {
-            if (confirm("Remove this record?")) { await deleteDoc(doc(db,"education",id)); renderEdu(); }
+            if (!confirm("Remove this record?")) return;
+            try {
+                await deleteDoc(doc(db, "education", id));
+                toast('Record removed', 'info');
+                await renderEdu();
+            } catch(err) {
+                toast('Delete failed: ' + err.message, 'error');
+            }
         };
     </script>
 </body>
