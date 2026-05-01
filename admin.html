@@ -3,18 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Admin | Deshan Portfolio Manager</title>
+    <title>Super Admin | CMS Control</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
         
-        :root {
-            --glow-color-1: #0ea5e9;
-            --glow-color-2: #6366f1;
-            --glow-color-3: #a855f7;
-        }
-
         body {
             background-color: #020617;
             color: #e2e8f0;
@@ -23,221 +17,174 @@
             min-height: 100vh;
         }
 
-        .aurora-background {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; overflow: hidden;
+        .ambient-bg {
+            position: fixed; inset: 0; z-index: -1;
+            background: radial-gradient(circle at 15% 50%, rgba(14, 165, 233, 0.08), transparent 25%),
+                        radial-gradient(circle at 85% 30%, rgba(99, 102, 241, 0.08), transparent 25%);
+            animation: pulseBg 10s infinite alternate;
         }
-        .aurora-background::before, .aurora-background::after {
-            content: ''; position: absolute; filter: blur(100px); opacity: 0.15;
-        }
-        .aurora-background::before {
-            background: radial-gradient(circle, var(--glow-color-1), transparent 60%);
-            width: 500px; height: 500px; border-radius: 50%;
-            top: -10%; left: -10%; animation: move-aurora-1 25s infinite alternate ease-in-out;
-        }
-        .aurora-background::after {
-            background: radial-gradient(circle, var(--glow-color-3), transparent 60%);
-            width: 600px; height: 600px; border-radius: 50%;
-            bottom: -15%; right: -15%; animation: move-aurora-2 30s infinite alternate ease-in-out;
-        }
-        @keyframes move-aurora-1 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(80vw, 90vh) scale(1.5); } }
-        @keyframes move-aurora-2 { 0% { transform: translate(0, 0) scale(1.2); } 100% { transform: translate(-90vw, -70vh) scale(0.8); } }
+        @keyframes pulseBg { 0% { opacity: 0.7; } 100% { opacity: 1; transform: scale(1.05); } }
 
-        .glass-effect {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
         .form-input {
             width: 100%;
-            background: rgba(30, 41, 59, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            padding: 12px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #f8fafc;
+            padding: 14px 16px;
             border-radius: 12px;
-            margin-bottom: 10px;
-            transition: 0.3s;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
         }
         .form-input:focus {
             border-color: #0ea5e9;
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
             outline: none;
-            box-shadow: 0 0 15px rgba(14, 165, 233, 0.2);
         }
-
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.4s ease-in-out; }
-        .tab-btn { padding-bottom: 8px; font-weight: 700; color: #94a3b8; transition: 0.3s; border-bottom: 3px solid transparent; cursor: pointer; }
-        .tab-btn.active { color: #0ea5e9; border-bottom-color: #0ea5e9; }
         
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .form-label {
+            color: #94a3b8; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.05em; margin-bottom: 8px; display: block;
+        }
+
+        .tab-content { display: none; opacity: 0; transform: translateY(10px); transition: all 0.4s ease; }
+        .tab-content.active { display: block; opacity: 1; transform: translateY(0); }
+        .tab-btn {
+            padding: 10px 20px; font-weight: 600; color: #64748b;
+            border-radius: 99px; transition: all 0.3s ease;
+        }
+        .tab-btn.active { background: rgba(14, 165, 233, 0.1); color: #0ea5e9; }
         
-        label { color: #38bdf8; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px; display: block; }
-
-        @keyframes shake {
-            0%,100% { transform: translateX(0); }
-            20%,60% { transform: translateX(-8px); }
-            40%,80% { transform: translateX(8px); }
-        }
-        .shake { animation: shake 0.4s ease; }
-
-        /* ── Toast System ──────────────────────────────────────── */
-        #toast-container {
-            position: fixed; top: 24px; right: 24px;
-            z-index: 9999; display: flex; flex-direction: column; gap: 10px;
-            pointer-events: none;
-        }
+        #toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
         .toast {
-            display: flex; align-items: center; gap: 12px;
-            padding: 14px 20px; border-radius: 14px; min-width: 260px;
-            font-size: 13px; font-weight: 700;
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255,255,255,0.12);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-            animation: toastIn 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
-            pointer-events: all;
+            display: flex; align-items: center; gap: 12px; padding: 16px 24px; border-radius: 12px;
+            font-size: 0.85rem; font-weight: 600; background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            pointer-events: auto;
         }
-        .toast.hide { animation: toastOut 0.3s ease forwards; }
-        .toast.success { background: rgba(16,185,129,0.15); color: #6ee7b7; border-color: rgba(16,185,129,0.3); }
-        .toast.error   { background: rgba(239,68,68,0.15);  color: #fca5a5; border-color: rgba(239,68,68,0.3); }
-        .toast.info    { background: rgba(14,165,233,0.15); color: #7dd3fc; border-color: rgba(14,165,233,0.3); }
-        @keyframes toastIn  { from { opacity:0; transform: translateX(60px) scale(0.9); } to { opacity:1; transform: translateX(0) scale(1); } }
-        @keyframes toastOut { from { opacity:1; transform: translateX(0); } to { opacity:0; transform: translateX(60px); } }
-
-        /* ── Button loading state ─────────────────────────────── */
-        .btn-save { position: relative; overflow: hidden; transition: all 0.2s; }
-        .btn-save:disabled { opacity: 0.7; cursor: not-allowed; transform: none !important; }
-        .btn-save .btn-spinner {
-            display: none; width: 16px; height: 16px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-top-color: white; border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-        }
-        .btn-save.loading .btn-spinner { display: inline-block; }
-        .btn-save.loading .btn-text { opacity: 0.6; }
+        .toast.success { border-left: 4px solid #10b981; }
+        .toast.error { border-left: 4px solid #ef4444; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        
+        .spinner { border: 2px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; width: 20px; height: 20px; animation: spin 0.8s linear infinite; display: none; }
+        .btn-loading .spinner { display: block; }
+        .btn-loading .btn-text { display: none; }
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="p-4 md:p-10">
-    <div class="aurora-background"></div>
-
-    <!-- Toast container -->
+<body class="p-4 md:p-8">
+    <div class="ambient-bg"></div>
     <div id="toast-container"></div>
 
-    <!-- Login Screen -->
-    <div id="login-screen" class="fixed inset-0 bg-slate-950 flex items-center justify-center z-[100]">
-        <div id="login-card" class="glass-effect p-10 rounded-3xl w-full max-w-md shadow-2xl text-center">
-            <div class="mb-6">
-                <div class="w-20 h-20 bg-sky-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-sky-500/50">
-                    <i class="fa-solid fa-shield-halved text-3xl text-sky-400"></i>
-                </div>
-                <h2 class="text-3xl font-black text-white uppercase italic tracking-tighter">Identity Check</h2>
-                <p class="text-slate-500 text-xs mt-2 uppercase font-bold">Authorized Personnel Only</p>
+    <div id="login-screen" class="fixed inset-0 bg-slate-950/80 backdrop-blur-xl flex items-center justify-center z-[100]">
+        <div class="glass-panel p-10 rounded-3xl w-full max-w-sm text-center transform transition-all shadow-2xl border border-white/10">
+            <div class="w-16 h-16 bg-gradient-to-tr from-sky-500 to-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-sky-500/20">
+                <i class="fa-solid fa-lock text-2xl text-white"></i>
             </div>
-            <input type="password" id="admin-pass" class="form-input text-center text-xl tracking-widest" placeholder="••••••••">
-            <p id="login-error" class="text-red-400 text-xs font-bold mb-3 hidden">Verification Failed. Try again.</p>
+            <h2 class="text-2xl font-black text-white tracking-tight mb-2">Admin Access</h2>
+            <p class="text-slate-400 text-sm mb-8">Authenticate to continue</p>
+            
+            <input type="password" id="admin-pass" class="form-input text-center text-xl tracking-[0.3em] mb-4" placeholder="••••••••">
+            <p id="login-error" class="text-red-400 text-xs font-bold mb-4 hidden bg-red-500/10 py-2 rounded-lg">Authentication Failed</p>
 
-            <!-- Login button with loading state -->
-            <button id="login-btn" onclick="checkPass()" class="btn-save w-full bg-sky-600 hover:bg-sky-500 py-4 rounded-xl font-black uppercase italic transition transform hover:scale-105 shadow-lg shadow-sky-900/40 flex items-center justify-center gap-3">
-                <div class="btn-spinner"></div>
-                <span class="btn-text">Enter Dashboard</span>
+            <button id="login-btn" onclick="checkPass()" class="w-full bg-white text-slate-900 hover:bg-slate-200 py-3.5 rounded-xl font-bold transition-all flex items-center justify-center gap-2">
+                <span class="spinner !border-slate-900 !border-top-slate-400"></span>
+                <span class="btn-text">Unlock Dashboard</span>
             </button>
         </div>
     </div>
 
-    <!-- Admin Panel -->
-    <div id="admin-panel" class="hidden max-w-5xl mx-auto pt-10">
-        <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-4 border-b border-slate-800 pb-8">
+    <div id="admin-panel" class="hidden max-w-6xl mx-auto pt-6">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
             <div>
-                <h1 class="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-500 uppercase italic">CMS Control v3.0</h1>
-                <!-- Auth status indicator -->
-                <p id="auth-status" class="text-xs text-slate-600 mt-1 font-mono">Initializing...</p>
+                <h1 class="text-3xl font-black text-white tracking-tight">System Control</h1>
+                <p id="auth-status" class="text-emerald-400 text-xs font-mono mt-2 bg-emerald-500/10 inline-block px-3 py-1 rounded-full"><i class="fa-solid fa-circle-check mr-1"></i> Connected</p>
             </div>
-            <button onclick="location.reload()" class="text-slate-400 hover:text-white bg-slate-800/50 border border-slate-700 px-6 py-2 rounded-full text-xs font-black uppercase transition">Sign Out</button>
+            <button onclick="location.reload()" class="text-slate-400 hover:text-white bg-slate-800/50 hover:bg-slate-800 px-5 py-2.5 rounded-xl text-sm font-semibold transition border border-white/5">Sign Out</button>
+        </header>
+
+        <div class="glass-panel p-2 rounded-2xl flex gap-2 mb-8 overflow-x-auto w-max border border-white/5">
+            <button onclick="switchTab('tab-hero', this)" class="tab-btn active text-sm"><i class="fa-regular fa-user mr-2"></i>Profile</button>
+            <button onclick="switchTab('tab-edu', this)" class="tab-btn text-sm"><i class="fa-solid fa-graduation-cap mr-2"></i>Education</button>
+            <button onclick="switchTab('tab-proj', this)" class="tab-btn text-sm"><i class="fa-brands fa-github mr-2"></i>GitHub Sync</button>
         </div>
 
-        <div class="flex gap-10 mb-12 overflow-x-auto whitespace-nowrap scrollbar-hide pb-2">
-            <button onclick="switchTab('tab-hero', this)" class="tab-btn active uppercase italic tracking-widest text-sm">🏠 Profile Hub</button>
-            <button onclick="switchTab('tab-edu', this)"  class="tab-btn uppercase italic tracking-widest text-sm">🎓 Academy History</button>
-            <button onclick="switchTab('tab-proj', this)" class="tab-btn uppercase italic tracking-widest text-sm">🚀 GitHub Automation</button>
-        </div>
-
-        <!-- Tab: Profile Hub -->
-        <div id="tab-hero" class="tab-content active space-y-10">
-            <div class="glass-effect p-8 rounded-3xl shadow-xl">
-                <h3 class="text-white font-black mb-8 uppercase italic tracking-widest text-lg border-l-4 border-sky-500 pl-4">Core Identity</h3>
+        <div id="tab-hero" class="tab-content active space-y-8">
+            <div class="glass-panel p-8 rounded-3xl">
+                <h3 class="text-white font-bold mb-6 text-lg flex items-center"><span class="w-8 h-8 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center mr-3"><i class="fa-solid fa-id-card"></i></span> Core Information</h3>
                 <form id="heroForm">
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div><label>Full Name</label><input type="text" id="h_name" class="form-input" required></div>
-                        <div><label>Professional Headline</label><input type="text" id="h_headline" class="form-input" required></div>
-                        <div><label>Direct Contact</label><input type="text" id="h_phone" class="form-input"></div>
-                        <div><label>Work Email</label><input type="email" id="h_email" class="form-input"></div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div><label class="form-label">Full Name</label><input type="text" id="h_name" class="form-input" required></div>
+                        <div><label class="form-label">Professional Headline</label><input type="text" id="h_headline" class="form-input" required></div>
+                        <div><label class="form-label">Phone Number</label><input type="text" id="h_phone" class="form-input"></div>
+                        <div><label class="form-label">Email Address</label><input type="email" id="h_email" class="form-input"></div>
                         <div class="col-span-2">
-                            <label>CV / Resume URL <span class="text-slate-500 normal-case font-normal tracking-normal">(Google Drive share link)</span></label>
-                            <input type="text" id="h_cv" class="form-input" placeholder="https://drive.google.com/...">
+                            <label class="form-label">Resume URL (G-Drive)</label>
+                            <input type="url" id="h_cv" class="form-input">
                         </div>
-                        <div class="col-span-2"><label>Executive Bio</label><textarea id="h_bio" rows="4" class="form-input"></textarea></div>
+                        <div class="col-span-2">
+                            <label class="form-label">Executive Bio</label>
+                            <textarea id="h_bio" rows="4" class="form-input resize-none"></textarea>
+                        </div>
                     </div>
-                    <button type="submit" id="hero-save-btn" class="btn-save w-full bg-sky-600 py-4 rounded-xl font-black mt-6 uppercase italic shadow-lg hover:bg-sky-500 transition-all transform hover:translate-y-[-2px] flex items-center justify-center gap-3">
-                        <div class="btn-spinner"></div>
-                        <span class="btn-text">💾 Save Changes</span>
-                    </button>
+                    <div class="mt-8 flex justify-end">
+                        <button type="submit" id="hero-save-btn" class="bg-sky-500 hover:bg-sky-400 text-white px-8 py-3.5 rounded-xl font-bold transition-all shadow-lg shadow-sky-500/20 flex items-center gap-2">
+                            <span class="spinner"></span><span class="btn-text">Save Changes</span>
+                        </button>
+                    </div>
                 </form>
             </div>
 
-            <div class="glass-effect p-8 rounded-3xl shadow-xl">
-                <h3 class="font-black text-sky-400 mb-8 uppercase italic tracking-widest text-lg border-l-4 border-indigo-500 pl-4">Social Network Integration</h3>
-                <form id="socialForm" class="flex flex-col md:flex-row gap-4 mb-10">
-                    <div class="flex-grow">
-                        <label>Target URL (GitHub, LinkedIn, etc.)</label>
-                        <input type="url" id="s_url" class="form-input mb-0" placeholder="https://..." required>
-                    </div>
-                    <button type="submit" id="social-add-btn" class="btn-save bg-indigo-600 h-[48px] mt-auto px-10 rounded-xl font-black uppercase italic hover:bg-indigo-500 transition shadow-lg shadow-indigo-900/20 flex items-center justify-center gap-2 min-w-[100px]">
-                        <div class="btn-spinner"></div>
-                        <span class="btn-text">Add</span>
+            <div class="glass-panel p-8 rounded-3xl">
+                <h3 class="text-white font-bold mb-6 text-lg flex items-center"><span class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center mr-3"><i class="fa-solid fa-link"></i></span> Social Links</h3>
+                <form id="socialForm" class="flex gap-4 mb-8">
+                    <input type="url" id="s_url" class="form-input flex-1" placeholder="https://linkedin.com/in/..." required>
+                    <button type="submit" id="social-add-btn" class="bg-indigo-500 hover:bg-indigo-400 text-white px-6 py-3.5 rounded-xl font-bold transition flex items-center gap-2">
+                        <span class="spinner"></span><span class="btn-text">Add Link</span>
                     </button>
                 </form>
                 <div id="social-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
             </div>
         </div>
 
-        <!-- Tab: Education -->
         <div id="tab-edu" class="tab-content">
-            <div class="glass-effect p-8 rounded-3xl shadow-xl mb-10">
-                <h3 class="text-white font-black mb-8 uppercase italic tracking-widest text-lg border-l-4 border-sky-500 pl-4">Add Qualification</h3>
-                <form id="eduForm" class="grid md:grid-cols-3 gap-6">
-                    <div><label>Degree / Diploma</label><input type="text" id="e_title" class="form-input" placeholder="BEng (Hons)..." required></div>
-                    <div><label>Institution</label><input type="text" id="e_inst" class="form-input" placeholder="University..." required></div>
-                    <div><label>Duration Period</label><input type="text" id="e_year" class="form-input" placeholder="2022 - 2026" required></div>
-                    <button type="submit" id="edu-save-btn" class="btn-save md:col-span-3 bg-sky-600 py-4 rounded-xl font-black uppercase italic hover:bg-sky-500 transition shadow-lg flex items-center justify-center gap-3">
-                        <div class="btn-spinner"></div>
-                        <span class="btn-text">📚 Commit to Timeline</span>
-                    </button>
+            <div class="glass-panel p-8 rounded-3xl mb-8">
+                <h3 class="text-white font-bold mb-6 text-lg flex items-center"><span class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center mr-3"><i class="fa-solid fa-plus"></i></span> Add Qualification</h3>
+                <form id="eduForm" class="grid md:grid-cols-3 gap-6 items-end">
+                    <div><label class="form-label">Degree / Title</label><input type="text" id="e_title" class="form-input" required></div>
+                    <div><label class="form-label">Institution</label><input type="text" id="e_inst" class="form-input" required></div>
+                    <div><label class="form-label">Year / Duration</label><input type="text" id="e_year" class="form-input" required></div>
+                    <div class="md:col-span-3 flex justify-end mt-2">
+                        <button type="submit" id="edu-save-btn" class="bg-emerald-500 hover:bg-emerald-400 text-white px-8 py-3.5 rounded-xl font-bold transition shadow-lg shadow-emerald-500/20 flex items-center gap-2">
+                            <span class="spinner"></span><span class="btn-text">Save Record</span>
+                        </button>
+                    </div>
                 </form>
             </div>
             <div id="edu-list" class="space-y-4"></div>
         </div>
 
-        <!-- Tab: GitHub -->
         <div id="tab-proj" class="tab-content">
-            <div class="glass-effect p-12 rounded-3xl shadow-xl text-center border border-sky-500/20">
-                <div class="w-24 h-24 bg-slate-900 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl border border-slate-800">
-                    <i class="fa-brands fa-github text-5xl text-sky-500"></i>
+            <div class="glass-panel p-10 rounded-3xl text-center">
+                <div class="w-20 h-20 bg-slate-900 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-slate-700">
+                    <i class="fa-brands fa-github text-4xl text-white"></i>
                 </div>
-                <h3 class="text-3xl font-black text-white mb-4 uppercase italic">Zero-Maintenance Sync</h3>
-                <p class="text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-                    Your portfolio's projects and technical statistics are now automatically pulled from your GitHub account: <br>
-                    <span class="text-sky-400 font-mono font-bold text-lg">deshanmahesh-lab</span>
-                </p>
-                <div class="bg-slate-950/50 p-8 rounded-3xl text-left border border-slate-800/50 max-w-2xl mx-auto">
-                    <h4 class="text-xs font-black text-sky-500 uppercase mb-6 tracking-widest italic flex items-center">
-                        <span class="w-2 h-2 bg-sky-500 rounded-full mr-3 animate-pulse"></span> Dynamic Content Guidelines
-                    </h4>
-                    <ul class="text-sm text-slate-300 space-y-4 font-medium">
-                        <li class="flex items-start"><i class="fa-solid fa-circle-check text-emerald-500 mt-1 mr-3"></i> <b>Public Repositories:</b> Ensure your best work is public on GitHub to be displayed.</li>
-                        <li class="flex items-start"><i class="fa-solid fa-circle-check text-emerald-500 mt-1 mr-3"></i> <b>Description Management:</b> Add descriptions and 'Topics' on GitHub to update project metadata instantly.</li>
-                        <li class="flex items-start"><i class="fa-solid fa-circle-check text-emerald-500 mt-1 mr-3"></i> <b>Language Analytics:</b> Technical Contribution bar is calculated in real-time from your repository codebases.</li>
+                <h3 class="text-2xl font-bold text-white mb-2">Automated GitHub Sync</h3>
+                <p class="text-slate-400 mb-8 max-w-xl mx-auto">Your frontend automatically fetches repositories and language stats from <span class="text-sky-400 font-mono">deshanmahesh-lab</span>. No manual updates required.</p>
+                <div class="bg-slate-900/50 p-6 rounded-2xl text-left inline-block border border-white/5">
+                    <h4 class="text-sm font-bold text-slate-300 mb-4 uppercase tracking-widest text-center">How to maintain</h4>
+                    <ul class="text-sm text-slate-400 space-y-3">
+                        <li><i class="fa-solid fa-check text-sky-400 mr-2"></i> Keep repositories <b>Public</b> to show them.</li>
+                        <li><i class="fa-solid fa-check text-sky-400 mr-2"></i> Add a detailed <b>Description</b> in GitHub.</li>
+                        <li><i class="fa-solid fa-check text-sky-400 mr-2"></i> Add relevant <b>Topics</b> (React, Node, etc.) on GitHub.</li>
                     </ul>
                 </div>
             </div>
@@ -247,234 +194,183 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, deleteDoc, query, orderBy }
-            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
-            apiKey:            "AIzaSyC9EJeuno63NWQH79z29nf59p1zbko0Wwg",
-            authDomain:        "deshan-portfolio-aacbb.firebaseapp.com",
-            projectId:         "deshan-portfolio-aacbb",
-            storageBucket:     "deshan-portfolio-aacbb.firebasestorage.app",
+            apiKey: "AIzaSyC9EJeuno63NWQH79z29nf59p1zbko0Wwg",
+            authDomain: "deshan-portfolio-aacbb.firebaseapp.com",
+            projectId: "deshan-portfolio-aacbb",
+            storageBucket: "deshan-portfolio-aacbb.firebasestorage.app",
             messagingSenderId: "55323696037",
-            appId:             "1:55323696037:web:56896fdd64bc9a28cc664c",
-            measurementId:     "G-K7H10VL1V4"
+            appId: "1:55323696037:web:56896fdd64bc9a28cc664c"
         };
 
-        const app  = initializeApp(firebaseConfig);
+        const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db   = getFirestore(app);
+        const db = getFirestore(app);
 
-        // ── Toast Helper ────────────────────────────────────────────
-        function toast(message, type = 'success') {
-            const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', info: 'fa-circle-info' };
+        function showToast(msg, type = 'success') {
             const container = document.getElementById('toast-container');
             const el = document.createElement('div');
             el.className = `toast ${type}`;
-            el.innerHTML = `<i class="fa-solid ${icons[type]}"></i><span>${message}</span>`;
+            el.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-check-circle text-emerald-500' : 'fa-circle-xmark text-red-500'}"></i> ${msg}`;
             container.appendChild(el);
-            setTimeout(() => {
-                el.classList.add('hide');
-                setTimeout(() => el.remove(), 300);
-            }, 3500);
+            setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 4000);
         }
 
-        // ── Button Loading State Helpers ─────────────────────────────
-        function btnLoading(btn, on) {
-            btn.disabled = on;
-            btn.classList.toggle('loading', on);
+        function toggleLoad(btnId, isLoading) {
+            const btn = document.getElementById(btnId);
+            if(isLoading) { btn.classList.add('btn-loading'); btn.disabled = true; } 
+            else { btn.classList.remove('btn-loading'); btn.disabled = false; }
         }
 
-        // ── Enter key on login ───────────────────────────────────────
-        document.getElementById('admin-pass').addEventListener('keydown', e => {
-            if (e.key === 'Enter') checkPass();
-        });
-
-        // ── Login: password check → anonymous Firebase auth ──────────
-        window.checkPass = async () => {
-            const pass    = document.getElementById('admin-pass').value;
-            const card    = document.getElementById('login-card');
-            const error   = document.getElementById('login-error');
-            const loginBtn = document.getElementById('login-btn');
-
-            if (pass !== "deshan123") {
-                error.classList.remove('hidden');
-                card.classList.remove('shake');
-                void card.offsetWidth;
-                card.classList.add('shake');
-                document.getElementById('admin-pass').value = '';
-                return;
-            }
-
-            // Correct password — sign in anonymously to Firebase Auth
-            btnLoading(loginBtn, true);
-            try {
-                await signInAnonymously(auth);
-                // onAuthStateChanged will handle revealing the panel
-            } catch (err) {
-                btnLoading(loginBtn, false);
-                error.textContent = 'Firebase Auth failed: ' + err.message;
-                error.classList.remove('hidden');
-            }
-        };
-
-        // ── Auth state: reveal panel only after Firebase confirms sign-in ──
-        onAuthStateChanged(auth, user => {
-            if (user) {
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('admin-panel').classList.remove('hidden');
-                document.getElementById('auth-status').textContent = `✓ Authenticated — UID: ${user.uid.slice(0,8)}...`;
-                document.getElementById('auth-status').style.color = '#22c55e';
-                loadAllData();
-            }
-        });
-
-        // ── Tab switcher ─────────────────────────────────────────────
         window.switchTab = (id, btn) => {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            if (btn) btn.classList.add('active');
+            btn.classList.add('active');
         };
 
-        // ── Load all data ────────────────────────────────────────────
+        document.getElementById('admin-pass').addEventListener('keydown', e => { if (e.key === 'Enter') checkPass(); });
+
+        window.checkPass = async () => {
+            const pass = document.getElementById('admin-pass').value;
+            const err = document.getElementById('login-error');
+            if (pass !== "deshan123") { err.classList.remove('hidden'); return; }
+            
+            err.classList.add('hidden');
+            toggleLoad('login-btn', true);
+            try {
+                await signInAnonymously(auth);
+            } catch (error) {
+                toggleLoad('login-btn', false);
+                console.error("Login Error:", error);
+                err.textContent = "Error: " + error.message;
+                err.classList.remove('hidden');
+            }
+        };
+
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('admin-panel').classList.remove('hidden');
+                loadAllData();
+            }
+        });
+
         async function loadAllData() {
             try {
                 const h = await getDoc(doc(db, "siteConfig", "hero"));
                 if (h.exists()) {
                     const d = h.data();
-                    document.getElementById('h_name').value     = d.name     || '';
-                    document.getElementById('h_headline').value = d.headline || '';
-                    document.getElementById('h_phone').value    = d.phone    || '';
-                    document.getElementById('h_email').value    = d.email    || '';
-                    document.getElementById('h_cv').value       = d.cv       || '';
-                    document.getElementById('h_bio').value      = d.bio      || '';
+                    ['name','headline','phone','email','cv','bio'].forEach(k => {
+                        if(document.getElementById(`h_${k}`)) document.getElementById(`h_${k}`).value = d[k] || '';
+                    });
                 }
-                await renderSocials();
-                await renderEdu();
-            } catch(err) {
-                toast('Data load failed: ' + err.message, 'error');
+                loadSocials(); loadEdu();
+            } catch(e) { 
+                console.error("Load Data Error:", e);
+                showToast('Error loading data: ' + e.message, 'error'); 
             }
         }
 
-        // ── Hero Form ────────────────────────────────────────────────
+        // Hero Submit
         document.getElementById('heroForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('hero-save-btn');
-            btnLoading(btn, true);
+            e.preventDefault(); toggleLoad('hero-save-btn', true);
             try {
                 await setDoc(doc(db, "siteConfig", "hero"), {
-                    name:     document.getElementById('h_name').value,
+                    name: document.getElementById('h_name').value,
                     headline: document.getElementById('h_headline').value,
-                    phone:    document.getElementById('h_phone').value,
-                    email:    document.getElementById('h_email').value,
-                    cv:       document.getElementById('h_cv').value,
-                    bio:      document.getElementById('h_bio').value
+                    phone: document.getElementById('h_phone').value,
+                    email: document.getElementById('h_email').value,
+                    cv: document.getElementById('h_cv').value,
+                    bio: document.getElementById('h_bio').value
                 }, { merge: true });
-                toast('✅ Profile saved successfully!', 'success');
-            } catch(err) {
-                // Show the actual Firebase error — helps debug rules issues
-                toast('Save failed: ' + err.message, 'error');
-                console.error('Hero save error:', err);
-            } finally {
-                btnLoading(btn, false);
+                showToast('Profile updated successfully');
+            } catch(e) { 
+                console.error("Save Profile Error:", e);
+                showToast('Update failed: ' + e.message, 'error'); 
             }
+            toggleLoad('hero-save-btn', false);
         };
 
-        // ── Social Form ──────────────────────────────────────────────
+        // Socials
         document.getElementById('socialForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('social-add-btn');
-            const url = document.getElementById('s_url').value;
-            btnLoading(btn, true);
+            e.preventDefault(); toggleLoad('social-add-btn', true);
             try {
-                await addDoc(collection(db, "socials"), { url, timestamp: new Date() });
+                await addDoc(collection(db, "socials"), { url: document.getElementById('s_url').value, timestamp: new Date() });
                 document.getElementById('s_url').value = '';
-                toast('🔗 Social link added!', 'success');
-                await renderSocials();
-            } catch(err) {
-                toast('Add failed: ' + err.message, 'error');
-                console.error('Social add error:', err);
-            } finally {
-                btnLoading(btn, false);
+                showToast('Social link added'); loadSocials();
+            } catch(e) { 
+                console.error("Add Social Error:", e);
+                showToast('Error adding link: ' + e.message, 'error'); 
             }
+            toggleLoad('social-add-btn', false);
         };
 
-        async function renderSocials() {
+        async function loadSocials() {
             try {
                 const snap = await getDocs(query(collection(db, "socials"), orderBy("timestamp", "asc")));
                 document.getElementById('social-list').innerHTML = snap.docs.map(d => `
-                    <div class="bg-slate-900/50 p-4 rounded-2xl flex justify-between items-center border border-slate-800">
-                        <span class="text-xs truncate max-w-[80%] font-mono text-slate-500 italic">${d.data().url}</span>
-                        <button class="text-red-400 hover:bg-red-500/10 w-8 h-8 rounded-lg transition" onclick="deleteSocial('${d.id}')">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
+                    <div class="bg-slate-800/50 p-4 rounded-xl flex justify-between items-center border border-white/5">
+                        <span class="text-sm text-slate-300 truncate">${d.data().url}</span>
+                        <button onclick="delSocial('${d.id}')" class="text-slate-500 hover:text-red-400 transition"><i class="fa-solid fa-trash"></i></button>
                     </div>`).join('');
-            } catch(err) {
-                toast('Failed to load socials: ' + err.message, 'error');
-            }
+            } catch(e) { console.error("Load Socials Error:", e); }
         }
-
-        window.deleteSocial = async (id) => {
-            if (!confirm("Remove this link?")) return;
-            try {
-                await deleteDoc(doc(db, "socials", id));
-                toast('Link removed', 'info');
-                await renderSocials();
-            } catch(err) {
-                toast('Delete failed: ' + err.message, 'error');
-            }
+        window.delSocial = async (id) => { 
+            if(confirm('Delete?')){ 
+                try {
+                    await deleteDoc(doc(db, "socials", id)); 
+                    loadSocials(); 
+                } catch(e) {
+                    console.error("Delete Social Error:", e);
+                    showToast('Delete failed: ' + e.message, 'error');
+                }
+            } 
         };
 
-        // ── Education Form ───────────────────────────────────────────
+        // Education
         document.getElementById('eduForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('edu-save-btn');
-            btnLoading(btn, true);
+            e.preventDefault(); toggleLoad('edu-save-btn', true);
             try {
                 await addDoc(collection(db, "education"), {
-                    title:     document.getElementById('e_title').value,
-                    inst:      document.getElementById('e_inst').value,
-                    year:      document.getElementById('e_year').value,
+                    title: document.getElementById('e_title').value,
+                    inst: document.getElementById('e_inst').value,
+                    year: document.getElementById('e_year').value,
                     timestamp: new Date()
                 });
-                toast('🎓 Education record added!', 'success');
-                e.target.reset();
-                await renderEdu();
-            } catch(err) {
-                toast('Save failed: ' + err.message, 'error');
-                console.error('Education save error:', err);
-            } finally {
-                btnLoading(btn, false);
+                e.target.reset(); showToast('Education added'); loadEdu();
+            } catch(e) { 
+                console.error("Add Education Error:", e);
+                showToast('Error adding record: ' + e.message, 'error'); 
             }
+            toggleLoad('edu-save-btn', false);
         };
 
-        async function renderEdu() {
+        async function loadEdu() {
             try {
                 const snap = await getDocs(query(collection(db, "education"), orderBy("timestamp", "desc")));
                 document.getElementById('edu-list').innerHTML = snap.docs.map(d => `
-                    <div class="glass-effect p-6 rounded-2xl flex justify-between border border-slate-700/50">
+                    <div class="bg-slate-800/50 p-5 rounded-xl flex justify-between items-center border border-white/5">
                         <div>
-                            <h4 class="font-bold text-white uppercase italic">${d.data().title}</h4>
-                            <p class="text-sm text-slate-400">${d.data().inst} (${d.data().year})</p>
+                            <h4 class="font-bold text-white text-lg">${d.data().title}</h4>
+                            <p class="text-sm text-slate-400">${d.data().inst} • <span class="text-emerald-400">${d.data().year}</span></p>
                         </div>
-                        <button class="text-red-400 hover:bg-red-500/10 w-10 h-10 rounded-xl transition" onclick="deleteEdu('${d.id}')">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
+                        <button onclick="delEdu('${d.id}')" class="w-10 h-10 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white transition"><i class="fa-solid fa-trash"></i></button>
                     </div>`).join('');
-            } catch(err) {
-                toast('Failed to load education: ' + err.message, 'error');
-            }
+            } catch(e) { console.error("Load Education Error:", e); }
         }
-
-        window.deleteEdu = async (id) => {
-            if (!confirm("Remove this record?")) return;
-            try {
-                await deleteDoc(doc(db, "education", id));
-                toast('Record removed', 'info');
-                await renderEdu();
-            } catch(err) {
-                toast('Delete failed: ' + err.message, 'error');
-            }
+        window.delEdu = async (id) => { 
+            if(confirm('Delete?')){ 
+                try {
+                    await deleteDoc(doc(db, "education", id)); 
+                    loadEdu(); 
+                } catch(e) {
+                    console.error("Delete Education Error:", e);
+                    showToast('Delete failed: ' + e.message, 'error');
+                }
+            } 
         };
     </script>
 </body>
